@@ -1,8 +1,12 @@
-// import basicSsl from '@vitejs/plugin-basic-ssl'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    base: '',
-    build: {
+    plugins: [
+        basicSsl()
+    ],
+    server: {
+        hmr: false,
+        // port: 80
     },
 })
