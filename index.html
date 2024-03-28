@@ -23,6 +23,12 @@
       <a-asset-item id="start-button-model" src="assets/iniciar.glb"></a-asset-item>
     </a-assets>
 
+    <!-- Camera -->
+    <a-camera id="camera">
+      <a-entity id="log" text="color: red; align: center; width: 0.5;" position="0 -0.0 -0.214"
+        visible="false"></a-entity>
+    </a-camera>
+
     <!-- Hands -->
     <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: left"></a-entity>
     <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: right"></a-entity>
@@ -40,11 +46,13 @@
     <a-entity id="game">
       <a-entity id="button-start" scale="0.266 0.266 0.266" rotation="0.257 -91.928 -11.618" animation-mixer
         gltf-model="#start-button-model" position="-0.003 0.7 -0.49497"></a-entity>
+      <a-box id="button-start-contato" class="target" start-button rotation="37.329346268363395 0 0"
+        scale="0.21585 0.22467 0.21585" position="0 0.831 -0.46235" material="opacity: 1"></a-box>
 
       <!-- Elemento Left -->
       <a-entity id="vaquinha-left" grabbable data-vaquinha="left" scale="0.38238 0.38238 0.38238" class="target"
         position="-0.897 1.345 -1.053" goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0; color: red" collision="area: #area-de-scape;">
+        material="opacity: 0; color: red">
 
         <a-entity id="vaquinha-brincar-left" scale="0.243 0.243 0.243" gltf-model="#vaquinha-brincar-model"
           position="0 -10.46826 0" visible="true" data-contribui="true">
@@ -55,7 +63,7 @@
       <!-- Elemento Right -->
       <a-entity id="vaquinha-right" grabbable data-vaquinha="right" scale="0.38238 0.38238 0.38238" class="target"
         position="1.047 1.308 -0.999" goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0; color: red" collision="area: #area-de-scape;">
+        material="opacity: 0; color: red">
 
         <a-entity id="vaquinha-ouvirmusica-right" scale="0.243 0.243 0.243" gltf-model="#vaquinha-ouvirmusica-model"
           position="0.08334 -10.48772 0.205" visible="true" data-contribui="true"></a-entity>
