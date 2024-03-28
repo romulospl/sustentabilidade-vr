@@ -20,6 +20,7 @@
       <a-asset-item id="plano" src="/assets/mapa/map.glb"></a-asset-item>
       <a-asset-item id="vaquinha-brincar-model" src="/assets/vaquinha-contribui/brincar.glb"></a-asset-item>
       <a-asset-item id="vaquinha-ouvirmusica-model" src="assets/vaquinha-contribui/ouvirmusica.glb"></a-asset-item>
+      <a-asset-item id="cana-acucar" src="/assets/obj-sustentabilidade/cana-acucar.glb"></a-asset-item>
       <a-asset-item id="start-button-model" src="assets/iniciar.glb"></a-asset-item>
     </a-assets>
 
@@ -51,10 +52,9 @@
       <!-- Goal Left -->
       <a-entity id="goal-left" grabbable scale="0.38238 0.38238 0.38238" class="target"
         position="-0.897 1.345 -1.053" goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0; color: red">
-
-        <a-entity id="vaquinha-brincar-left" scale="0.243 0.243 0.243" gltf-model="#vaquinha-brincar-model"
-          position="0 -10.46826 0" visible="true" data-contribui="true">
+        material="opacity: 0.1; color: red">
+        <a-entity id="cana-acucar-left" scale="0.243 0.243 0.243" gltf-model="#cana-acucar"
+          position="0 -10.3 0" visible="true" data-value="1">
         </a-entity>
 
       </a-entity>
@@ -62,10 +62,10 @@
       <!-- Goal Right -->
       <a-entity id="goal-right" grabbable  scale="0.38238 0.38238 0.38238" class="target"
         position="1.047 1.308 -0.999" goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0; color: red">
+        material="opacity: 0.1; color: red">
 
-        <a-entity id="vaquinha-ouvirmusica-right" scale="0.243 0.243 0.243" gltf-model="#vaquinha-ouvirmusica-model"
-          position="0.08334 -10.48772 0.205" visible="true" data-contribui="true"></a-entity>
+        <a-entity id="cana-acucar-right" scale="0.243 0.243 0.243" gltf-model="#cana-acucar"
+          position="0.08334 -10.3 0.205" visible="true" data-contribui="true"></a-entity>
 
       </a-entity>
 

@@ -1,4 +1,4 @@
-export class manipuladorObjects {
+export class ManipuladorObjects {
 
     constructor(elemento) {
         this.el = elemento
@@ -26,7 +26,10 @@ export class manipuladorObjects {
         this.el.setAttribute('position', to)
     }
 
-    getPosition() {
+    getPosition(dado) {
+        if(dado == "x") return this.el.getAttribute('position').x
+        if(dado == "y") return this.el.getAttribute('position').y
+        if(dado == "z") return this.el.getAttribute('position').z
         return this.el.getAttribute('position')
     }
 
