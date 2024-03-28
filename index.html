@@ -19,6 +19,11 @@
       <a-asset-item id="plano" src="/assets/road.glb"></a-asset-item>
     </a-assets>
 
+    <!-- Hands -->
+    <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: left"></a-entity>
+    <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: right"></a-entity>
+
+    <!-- Ambiente -->
     <a-entity id="map-road1" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
     position="-3.30957 -0.66909 13.99133"></a-entity>
     <a-entity id="map-road2" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
