@@ -6,7 +6,8 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://sustentabilidadevr.pages.dev/aframe.min.js"></script>
-  <script src="https://sustentabilidadevr.pages.dev/unpkg.com_aframe-environment-component@1.1.0_dist_aframe-environment-component.min.js"></script>
+  <script
+    src="https://sustentabilidadevr.pages.dev/unpkg.com_aframe-environment-component@1.1.0_dist_aframe-environment-component.min.js"></script>
   <script src="https://sustentabilidadevr.pages.dev/aframe-extras.misc.min.js"></script>
   <script src="https://sustentabilidadevr.pages.dev/super-hands.min.js"></script>
   <script src="https://sustentabilidadevr.pages.dev/aframe-extras.min.js"></script>
@@ -17,6 +18,8 @@
   <a-scene debug inspector="url: vendor/aframe-inspector.min.js">
     <a-assets>
       <a-asset-item id="plano" src="/assets/road.glb"></a-asset-item>
+      <a-asset-item id="vaquinha-brincar-model" src="/assets/vaquinha-contribui/brincar.glb"></a-asset-item>
+      <a-asset-item id="vaquinha-ouvirmusica-model" src="assets/vaquinha-contribui/ouvirmusica.glb"></a-asset-item>
     </a-assets>
 
     <!-- Hands -->
@@ -25,10 +28,36 @@
 
     <!-- Ambiente -->
     <a-entity id="map-road1" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
-    position="-3.30957 -0.66909 13.99133"></a-entity>
+      position="-3.30957 -0.66909 13.99133"></a-entity>
     <a-entity id="map-road2" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
-    position="-3.30957 -0.66909 -31.22319"></a-entity>
-    
+      position="-3.30957 -0.66909 -31.22319"></a-entity>
+
+    <!-- Goals -->
+    <a-entity id="game">
+
+      <!-- Elemento Left -->
+      <a-entity id="vaquinha-left" grabbable data-vaquinha="left" scale="0.38238 0.38238 0.38238" class="target"
+        position="-0.897 1.345 -1.053" goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
+        material="opacity: 0; color: red" collision="area: #area-de-scape;">
+
+        <a-entity id="vaquinha-brincar-left" scale="0.243 0.243 0.243" gltf-model="#vaquinha-brincar-model"
+          position="0 -10.46826 0" visible="true" data-contribui="true">
+        </a-entity>
+
+      </a-entity>
+
+      <!-- Elemento Right -->
+      <a-entity id="vaquinha-right" grabbable data-vaquinha="right" scale="0.38238 0.38238 0.38238" class="target"
+        position="1.047 1.308 -0.999" goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;"
+        material="opacity: 0; color: red" collision="area: #area-de-scape;">
+
+        <a-entity id="vaquinha-ouvirmusica-right" scale="0.243 0.243 0.243" gltf-model="#vaquinha-ouvirmusica-model"
+          position="0.08334 -10.48772 0.205" visible="true" data-contribui="true"></a-entity>
+
+      </a-entity>
+
+    </a-entity>
+
   </a-scene>
   <script src="./index.js" type="module"></script>
 </body>
