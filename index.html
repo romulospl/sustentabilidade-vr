@@ -17,7 +17,7 @@
 <body>
   <a-scene debug inspector="url: vendor/aframe-inspector.min.js">
     <a-assets>
-      <a-asset-item id="plano" src="/assets/road.glb"></a-asset-item>
+      <a-asset-item id="plano" src="/assets/mapa/map.glb"></a-asset-item>
       <a-asset-item id="vaquinha-brincar-model" src="/assets/vaquinha-contribui/brincar.glb"></a-asset-item>
       <a-asset-item id="vaquinha-ouvirmusica-model" src="assets/vaquinha-contribui/ouvirmusica.glb"></a-asset-item>
       <a-asset-item id="start-button-model" src="assets/iniciar.glb"></a-asset-item>
@@ -34,11 +34,11 @@
     <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: right"></a-entity>
 
     <!-- Ambiente -->
-    <a-entity id="map-road1" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
-      position="-3.30957 -0.66909 13.99133"></a-entity>
-    <a-entity id="map-road2" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
-      position="-3.30957 -0.66909 -31.22319"></a-entity>
-    <a-light id="light1" light="intensity: 1.55" scale="0.829 0.829 0.829" position="-0.031 1.884 0.52362"
+    <a-entity id="map-road1" scale="3.213 3.213 3.213" rotation="-180 1.352 -180" gltf-model="#plano"
+      position="-1.874 -1.72038 13.957"></a-entity>
+    <a-entity id="map-road2"  scale="3.213 3.213 3.213" rotation="-180 1.352 -180" gltf-model="#plano"
+      position="-2.87945 -1.72038 -17.19235"></a-entity>
+    <a-light id="light1" light="intensity: 4.14" scale="0.829 0.829 0.829" position="-0.031 1.884 0.62931"
       rotation="117.251 84.993 -117.162"></a-light>
 
     <!-- Goals -->
