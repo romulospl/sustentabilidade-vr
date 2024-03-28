@@ -39,7 +39,7 @@
     <a-entity id="map-road2" scale="4.77938 4.77938 4.77938" rotation="-180 1.352 -180" gltf-model="#plano"
       position="-3.30957 -0.66909 -31.22319"></a-entity>
 
-    <a-light id="light1" scale="0.829 0.829 0.829" position="-1.034 1.884 -0.3195"
+    <a-light id="light1" light="intensity: 1.55" scale="0.829 0.829 0.829" position="-0.031 1.884 0.52362"
       rotation="117.251 84.993 -117.162"></a-light>
 
     <!-- Goals -->
@@ -49,8 +49,8 @@
       <a-box id="button-start-contato" class="target" start-button rotation="37.329346268363395 0 0"
         scale="0.21585 0.22467 0.21585" position="0 0.831 -0.46235" material="opacity: 1"></a-box>
 
-      <!-- Elemento Left -->
-      <a-entity id="vaquinha-left" grabbable data-vaquinha="left" scale="0.38238 0.38238 0.38238" class="target"
+      <!-- Goal Left -->
+      <a-entity id="goal-left" grabbable scale="0.38238 0.38238 0.38238" class="target"
         position="-0.897 1.345 -1.053" goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
         material="opacity: 0; color: red">
 
@@ -60,8 +60,8 @@
 
       </a-entity>
 
-      <!-- Elemento Right -->
-      <a-entity id="vaquinha-right" grabbable data-vaquinha="right" scale="0.38238 0.38238 0.38238" class="target"
+      <!-- Goal Right -->
+      <a-entity id="goal-right" grabbable  scale="0.38238 0.38238 0.38238" class="target"
         position="1.047 1.308 -0.999" goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;"
         material="opacity: 0; color: red">
 
