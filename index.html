@@ -20,6 +20,7 @@
       <a-asset-item id="plano" src="/assets/mapa/map.glb"></a-asset-item>
       <a-asset-item id="start-button-model" src="assets/iniciar.glb"></a-asset-item>
 
+      <!-- sustentaveis -->
       <a-asset-item id="agricutura-sustentavel-model"
         src="/assets/obj-sustentabilidade/agricultura-sustentavel.glb"></a-asset-item>
       <a-asset-item id="biocombustivel-model" src="/assets/obj-sustentabilidade/biocombustivel.glb"></a-asset-item>
@@ -37,6 +38,20 @@
         src="/assets/obj-sustentabilidade/reducao-de-emissoes-de-co2.glb"></a-asset-item>
       <a-asset-item id="sustentabilidade-hidrica-model"
         src="/assets/obj-sustentabilidade/sustentabilidade-hidrica.glb"></a-asset-item>
+
+
+      <!-- insustentaveis -->
+      <a-asset-item id="combustivel-fossil-model" src="/assets/obj-insustentavel/combustivel-fossil.glb"></a-asset-item>
+      <a-asset-item id="desmatamento-model" src="/assets/obj-insustentavel/desmatamento.glb"></a-asset-item>
+      <a-asset-item id="desperdicio-model" src="/assets/obj-insustentavel/desperdicio.glb"></a-asset-item>
+      <a-asset-item id="emissoes-de-co2-model" src="/assets/obj-insustentavel/emissoes-de-co2.glb"></a-asset-item>
+      <a-asset-item id="energia-nao-renovavel-model"
+        src="/assets/obj-insustentavel/energia-nao-renovavel.glb"></a-asset-item>
+      <a-asset-item id="escassez-de-agua-model" src="/assets/obj-insustentavel/escassez-de-agua.glb"></a-asset-item>
+      <a-asset-item id="gasolina-model" src="/assets/obj-insustentavel/gasolina.glb"></a-asset-item>
+      <a-asset-item id="petroleo-model" src="/assets/obj-insustentavel/petroleo.glb"></a-asset-item>
+      <a-asset-item id="poluicao-do-ar-model" src="/assets/obj-insustentavel/poluicao-do-ar.glb"></a-asset-item>
+      <a-asset-item id="queimandas-model" src="/assets/obj-insustentavel/queimandas.glb"></a-asset-item>
     </a-assets>
 
     <!-- Camera -->
@@ -70,7 +85,7 @@
         goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
         material="opacity: 0.1; color: red" collision="area: #scape-left;">
 
-        <!-- modelos -->
+        <!-- modelos positivos -->
         <a-entity id="agricutura-sustentavel-left" scale="0.243 0.243 0.243" gltf-model="#agricutura-sustentavel-model"
           position="-7.14541 -10.52155 0" visible="true" data-value="1">
         </a-entity>
@@ -84,7 +99,8 @@
           visible="true" data-value="1">
         </a-entity>
         <a-entity id="conservacao-de-recursos-naturais-left" scale="0.243 0.243 0.243"
-          gltf-model="#conservacao-de-recursos-naturais-model" position="-8.49127 -10.5 0" visible="true" data-value="1">
+          gltf-model="#conservacao-de-recursos-naturais-model" position="-8.49127 -10.5 0" visible="true"
+          data-value="1">
         </a-entity>
         <a-entity id="descarbonizacao-left" scale="0.243 0.243 0.243" gltf-model="#descarbonizacao-model"
           position="-14.48992 -10.45277 0" visible="true" data-value="1">
@@ -105,6 +121,28 @@
           gltf-model="#sustentabilidade-hidrica-model" position="-11.46 -10.51 0" visible="true" data-value="1">
         </a-entity>
 
+        <!-- modelos negativos -->
+        <a-entity id="combustivel-fossil-left" scale="0.243 0.243 0.243" gltf-model="#combustivel-fossil-model"
+          position="-2.8583 -11.47252 0" visible="true" data-value="1"></a-entity>
+        <a-entity id="desmatamento-left" scale="0.243 0.243 0.243" gltf-model="#desmatamento-model"
+          position="-5.66536 -11.473 0" visible="true" data-value="1"></a-entity>
+        <a-entity id="desperdicio-left" scale="0.243 0.243 0.243" gltf-model="#desperdicio-model"
+          position="-13.005 -11.413 0" visible="true" data-value="1"></a-entity>
+        <a-entity id="emissoes-de-co2-left" scale="0.243 0.243 0.243" gltf-model="#emissoes-de-co2-model"
+          position="-11.37678 -11.413 0" visible="true" data-value="1"></a-entity>
+        <a-entity id="energia-nao-renovavel-left" scale="0.243 0.243 0.243" gltf-model="#energia-nao-renovavel-model"
+          position="-4.225 -11.413 -0.18" visible="true" data-value="1"></a-entity>
+        <a-entity id="escassez-de-agua-left" scale="0.243 0.243 0.243" gltf-model="#escassez-de-agua-model"
+          position="-10.045 -11.423 -0.07" visible="true" data-value="1"></a-entity>
+        <a-entity id="gasolina-left" scale="0.243 0.243 0.243" gltf-model="#gasolina-model"
+          position="-1.555 -11.413 -0.07" visible="true" data-value="1"></a-entity>
+        <a-entity id="petroleo-left" scale="0.243 0.243 0.243" gltf-model="#petroleo-model" position="0.025 -11.413 0"
+          visible="true" data-value="1"></a-entity>
+        <a-entity id="poluicao-do-ar-left" scale="0.243 0.243 0.243" gltf-model="#poluicao-do-ar-model"
+          position="-6.98839 -11.413 0" visible="true" data-value="1"></a-entity>
+        <a-entity id="queimandas-left" scale="0.243 0.243 0.243" gltf-model="#queimandas-model"
+          position="-8.54904 -11.413 0" visible="true" data-value="1"></a-entity>
+
       </a-entity>
 
       <!-- Goal Right -->
@@ -117,10 +155,10 @@
       </a-entity>
 
       <!-- areas -->
-      <!-- <a-entity id="scape-left" geometry="primitive: box;" position="-1.124 1.42 -1.2889"
-        material="opacity: 0; color: blue"></a-entity> -->
-      <a-entity id="scape-left" geometry="primitive: box;" position="-1.12442 1.42 4.935"
-        material="opacity: 0.7; color: blue"></a-entity>
+      <a-entity id="scape-left" geometry="primitive: box;" position="-1.124 1.42 -1.2889"
+        material="opacity: 0; color: blue" scale="1 1 1"></a-entity>
+      <!-- <a-entity id="scape-left" geometry="primitive: box;" position="-1.12442 1.42 4.935"
+          material="opacity: 0.7; color: blue"></a-entity> -->
 
 
     </a-entity>
