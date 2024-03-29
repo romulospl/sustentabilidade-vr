@@ -71,6 +71,9 @@ AFRAME.registerComponent('goal-object-left', {
 
             let buttonStart = document.querySelector('#button-start-contato')
 
+            this.caixaSustentavel = document.querySelector('#caixote-sustentavel')
+            this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel')
+
             this.bindMethods()
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
@@ -88,12 +91,13 @@ AFRAME.registerComponent('goal-object-left', {
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
         this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
+        this.colocarNoCaixote = this.colocarNoCaixote.bind(this)
         this.removerModelo = this.removerModelo.bind(this)
         this.reiniciarGoal = this.reiniciarGoal.bind(this)
         this.hoverStart = this.hoverStart.bind(this)
     },
     iniciarJogo: function () {
-        if(this.status === 'pronto'){
+        if (this.status === 'pronto') {
             this.selecionarModelo()
             this.adicionarAnimacao()
             this.status = 'iniciado'
@@ -153,11 +157,12 @@ AFRAME.registerComponent('goal-object-left', {
         this.status = 'hoverStart'
         let time = 2000
         try {
-            showLog(this.status)
             this.removerAnimacao()
             this.manipulador.addAnimation(posicaoCentralizada, time)
             this.manipulador.removeAttribute('hoverable')
             setTimeout(() => {
+                this.caixaSustentavel.addEventListener('collisionstarted', this.colocarNoCaixote)
+                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.colocarNoCaixote)
                 this.manipulador.addAttribute('grabbable')
                 this.removerAnimacao()
             }, (time + 500))
@@ -165,8 +170,14 @@ AFRAME.registerComponent('goal-object-left', {
             showLog(error)
         }
     },
+    colocarNoCaixote: function () {
+        this.caixaSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
+        this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
+        showLog("No caixote")
+        this.reiniciarGoal()
+    },
     tick: function () {
-        if (this.modelosEscolhidos.length > 5) this.modelosEscolhidos = []
+        if (this.modelosEscolhidos.length > 7) this.modelosEscolhidos = []
     }
 });
 
