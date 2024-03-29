@@ -31,9 +31,8 @@ AFRAME.registerComponent('goal-object-left', {
             let buttonStart = document.querySelector('#button-start-contato')
 
             this.bindMethods()
+            this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             buttonStart.addEventListener('startgame', this.iniciarJogo)
-            // this.iniciarJogo()
-
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -45,11 +44,13 @@ AFRAME.registerComponent('goal-object-left', {
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.iniciarAnimacao = this.iniciarAnimacao.bind(this)
         this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
+        this.removerModelo = this.removerModelo.bind(this)
+        this.reiniciarGoal = this.reiniciarGoal.bind(this)
     },
     iniciarJogo: function () {
         this.selecionarModelo()
         this.iniciarAnimacao()
-        this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
+
     },
     selecionarModelo: function () {
         this.modeloSorteado = sortearGoal(this.el)
@@ -57,14 +58,25 @@ AFRAME.registerComponent('goal-object-left', {
         let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
         manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
     },
+    removerModelo: function () {
+        let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
+        manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+    },
     irParaPosicaoInicial: function () {
         this.manipulador.setPosition("0 1.7 -63.14484")
     },
     iniciarAnimacao: function () {
+        this.manipulador.deleteAnimation()
         this.manipulador.addAnimation("-1.44571 1.42002 4.9347", 8000)
     },
-    verificarAreaEscape: function (){
+    verificarAreaEscape: function () {
         showLog("area escape")
+        this.reiniciarGoal()
+    },
+    reiniciarGoal: function () {
+        this.removerModelo()
+        this.irParaPosicaoInicial()
+        this.iniciarJogo()
     }
 
 });
