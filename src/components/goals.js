@@ -99,18 +99,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.iniciarJogo()
     },
     hoverStart: function () {
-        if(this.status === 'inicio'){
-            // showLog("eeee 1")
-            this.irParaAreaCentralizada()
-        } else {
-            // showLog("não funfou")
-        }
-        // showLog(this.status)
-        // if (this.status == 1) {
-        //     irParaAreaCentralizada()
-        // } else {
-        //     showLog("Caiu no errada")
-        // }
+        if (this.status === 'inicio') this.irParaAreaCentralizada()
     },
     irParaAreaCentralizada: function () {
         this.status = 'hoverStart'
