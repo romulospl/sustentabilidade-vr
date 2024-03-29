@@ -3,6 +3,26 @@ import { showLog } from '@/system/showLogs'
 
 const posicaoInicial = "0 1.7 -63.14484"
 const posicaoCentralizada = "0.03156 1.3189 -0.83031"
+const tempoDeAnimacao = 8000
+const regex = /(-left|-right)/g;
+
+const valorModels = [
+    { id: 'agricutura-sustentavel' , value: 1 },
+    { id: 'biocombustivel', value: 1},
+    { id: 'bioeletricidade', value: 1},
+    { id: 'cana-acucar', value: 1},
+    { id: 'conservacao-de-recursos-naturais', value: 1},
+    { id: 'descarbonizacao', value: 1},
+    { id: 'desenvolvimento-sustentavel', value: 1},
+    { id: 'eficiencia-energetica', value: 1},
+    { id: 'etanol-model', value: 1},
+    { id: 'reducao-de-emissoes-de-co2', value: 1},
+    { id: 'sustentabilidade-hidrica', value: 1},
+    // { id: , value: 1},
+    // { id: , value: 1},
+    // { id: , value: 1},
+
+]
 
 function sortearGoal(el) {
     let filhos = el.children
@@ -12,8 +32,11 @@ function sortearGoal(el) {
     //     indiceAleatorio = Math.floor(Math.random() * filhos.length)
     //     elementoAleatorio = filhos[indiceAleatorio]
     // }
-
-    return document.getElementById(elementoAleatorio.id)
+    
+    let d = document.getElementById(elementoAleatorio.id)
+    let elementoId = elementoAleatorio.id.replace(regex, "")
+    let filtro = valorModels.filter(v => v.id == elementoId).map(v => v.value)
+    return { sorteado: document.getElementById(elementoAleatorio.id), value: filtro[0]}
 }
 
 /*
@@ -67,8 +90,11 @@ AFRAME.registerComponent('goal-object-left', {
 
     },
     selecionarModelo: function () {
-        this.modeloSorteado = sortearGoal(this.el)
+        let { sorteado, value } = sortearGoal(this.el)
+        this.modeloSorteado = sorteado
+        this.pontuacao = value
 
+        console.log(`pontuação: ${this.pontuacao}`)
         let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
         if (manipuladorModeloSorteado.getPosition("y") < -2) {
             manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
@@ -86,13 +112,14 @@ AFRAME.registerComponent('goal-object-left', {
     },
     adicionarAnimacao: function () {
         this.removerAnimacao()
-        this.manipulador.addAnimation(this.posicaoAlvo, 8000)
+        this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
     },
     removerAnimacao: function () {
         this.manipulador.deleteAnimation()
     },
     verificarAreaEscape: function () {
         showLog("area escape")
+        // this.removerAnimacao()
         this.reiniciarGoal()
     },
     reiniciarGoal: function () {
