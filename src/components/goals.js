@@ -15,6 +15,14 @@ function sortearGoal(el) {
     return document.getElementById(elementoAleatorio.id)
 }
 
+/*
+STATUS:
+{
+    'inicio': INICIO
+    'hoverStart': HOVER START
+    3: 
+}
+*/
 
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -43,6 +51,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.iniciarJogo = this.iniciarJogo.bind(this)
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
+        this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
         this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
@@ -70,6 +79,7 @@ AFRAME.registerComponent('goal-object-left', {
         }
     },
     irParaPosicaoInicial: function () {
+        this.status = 'inicio'
         this.manipulador.setPosition(posicaoInicial)
     },
     adicionarAnimacao: function () {
@@ -89,8 +99,34 @@ AFRAME.registerComponent('goal-object-left', {
         this.iniciarJogo()
     },
     hoverStart: function () {
-        showLog("hoverStart")
-        this.removerAnimacao()
+        if(this.status === 'inicio'){
+            // showLog("eeee 1")
+            this.irParaAreaCentralizada()
+        } else {
+            // showLog("não funfou")
+        }
+        // showLog(this.status)
+        // if (this.status == 1) {
+        //     irParaAreaCentralizada()
+        // } else {
+        //     showLog("Caiu no errada")
+        // }
+    },
+    irParaAreaCentralizada: function () {
+        this.status = 'hoverStart'
+        let time = 2000
+        try {
+            showLog(this.status)
+            this.removerAnimacao()
+            this.manipulador.addAnimation("0.03156 1.3189 -0.83031", time)
+            this.manipulador.removeAttribute('hoverable')
+            setTimeout(() => {
+                this.manipulador.addAttribute('grabbable')
+                this.removerAnimacao()
+            }, (time + 500))
+        } catch (error) {
+            showLog(error)
+        }
     }
 
 });

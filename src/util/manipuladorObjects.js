@@ -26,6 +26,15 @@ export class ManipuladorObjects {
         this.el.setAttribute('position', to)
     }
 
+    removeAttribute(atributo){
+        this.el.removeAttribute(atributo)
+    }
+
+    addAttribute(atribute, value){
+        if(!value) value = ""
+        this.el.setAttribute(atribute, value)
+    }
+
     getPosition(dado) {
         if(dado == "x") return this.el.getAttribute('position').x
         if(dado == "y") return this.el.getAttribute('position').y
