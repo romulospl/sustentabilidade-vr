@@ -63,11 +63,11 @@ AFRAME.registerComponent('goal-object-left', {
         manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
     },
     irParaPosicaoInicial: function () {
-        this.manipulador.setPosition("0 1.7 -63.14484")
+        this.manipulador.setPosition(posicaoInicial)
     },
     iniciarAnimacao: function () {
         this.manipulador.deleteAnimation()
-        this.manipulador.addAnimation("-1.44571 1.42002 4.9347", 8000)
+        this.manipulador.addAnimation("-1.12442 1.42 4.935", 8000)
     },
     verificarAreaEscape: function () {
         showLog("area escape")
