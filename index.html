@@ -18,8 +18,25 @@
   <a-scene debug inspector="url: vendor/aframe-inspector.min.js">
     <a-assets>
       <a-asset-item id="plano" src="/assets/mapa/map.glb"></a-asset-item>
-      <a-asset-item id="cana-acucar" src="/assets/obj-sustentabilidade/cana-acucar.glb"></a-asset-item>
       <a-asset-item id="start-button-model" src="assets/iniciar.glb"></a-asset-item>
+
+      <a-asset-item id="agricutura-sustentavel-model"
+        src="/assets/obj-sustentabilidade/agricultura-sustentavel.glb"></a-asset-item>
+      <a-asset-item id="biocombustivel-model" src="/assets/obj-sustentabilidade/biocombustivel.glb"></a-asset-item>
+      <a-asset-item id="bioeletricidade-model" src="/assets/obj-sustentabilidade/bioeletricidade.glb"></a-asset-item>
+      <a-asset-item id="cana-acucar-model" src="/assets/obj-sustentabilidade/cana-acucar.glb"></a-asset-item>
+      <a-asset-item id="conservacao-de-recursos-naturais-model"
+        src="/assets/obj-sustentabilidade/conservacao-de-recursos-naturais.glb"></a-asset-item>
+      <a-asset-item id="descarbonizacao-model" src="/assets/obj-sustentabilidade/descarbonizacao.glb"></a-asset-item>
+      <a-asset-item id="desenvolvimento-sustentavel-model"
+        src="/assets/obj-sustentabilidade/desenvolvimento-sustentavel.glb"></a-asset-item>
+      <a-asset-item id="eficiencia-energetica-model"
+        src="/assets/obj-sustentabilidade/eficiencia-energetica.glb"></a-asset-item>
+      <a-asset-item id="etanol-model" src="/assets/obj-sustentabilidade/etanol.glb"></a-asset-item>
+      <a-asset-item id="reducao-de-emissoes-de-co2-model"
+        src="/assets/obj-sustentabilidade/reducao-de-emissoes-de-co2.glb"></a-asset-item>
+      <a-asset-item id="sustentabilidade-hidrica-model"
+        src="/assets/obj-sustentabilidade/sustentabilidade-hidrica.glb"></a-asset-item>
     </a-assets>
 
     <!-- Camera -->
@@ -52,8 +69,40 @@
       <a-entity id="goal-left" hoverable scale="0.57972 0.57972 0.57972" class="target" position="-0.897 1.345 -1.053"
         goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
         material="opacity: 0.1; color: red" collision="area: #scape-left;">
-        <a-entity id="cana-acucar-left" scale="0.243 0.243 0.243" gltf-model="#cana-acucar" position="0 -10.3 0"
+
+        <!-- modelos -->
+        <a-entity id="agricutura-sustentavel-left" scale="0.243 0.243 0.243" gltf-model="#agricutura-sustentavel-model"
+          position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="biocombustivel-left" scale="0.243 0.243 0.243" gltf-model="#biocombustivel-model"
+          position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="bioeletricidade-left" scale="0.243 0.243 0.243" gltf-model="#bioeletricidade-model"
+          position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="cana-acucar-left" scale="0.243 0.243 0.243" gltf-model="#cana-acucar-model" position="0 -10.3 0"
           visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="conservacao-de-recursos-naturais-left" scale="0.243 0.243 0.243"
+          gltf-model="#conservacao-de-recursos-naturais-model" position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="descarbonizacao-left" scale="0.243 0.243 0.243" gltf-model="#descarbonizacao-model"
+          position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="desenvolvimento-sustentavel-left" scale="0.243 0.243 0.243"
+          gltf-model="#desenvolvimento-sustentavel-model" position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="eficiencia-energetica-left" scale="0.243 0.243 0.243" gltf-model="#eficiencia-energetica-model"
+          position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="etanol-model-left" scale="0.243 0.243 0.243" gltf-model="#etanol-model" position="0 -10.3 0"
+          visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="reducao-de-emissoes-de-co2-left" scale="0.243 0.243 0.243"
+          gltf-model="#reducao-de-emissoes-de-co2-model" position="0 -10.3 0" visible="true" data-value="1">
+        </a-entity>
+        <a-entity id="sustentabilidade-hidrica-left" scale="0.243 0.243 0.243"
+          gltf-model="#sustentabilidade-hidrica-model" position="0 -10.3 0" visible="true" data-value="1">
         </a-entity>
 
       </a-entity>
@@ -62,7 +111,7 @@
       <a-entity id="goal-right" grabbable scale="0.38238 0.38238 0.38238" class="target" position="1.047 1.308 -0.999"
         goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;" material="opacity: 0.1; color: red">
 
-        <a-entity id="cana-acucar-right" scale="0.243 0.243 0.243" gltf-model="#cana-acucar"
+        <a-entity id="cana-acucar-right" scale="0.243 0.243 0.243" gltf-model="#cana-acucar-model"
           position="0.08334 -10.3 0.205" visible="true" data-contribui="true"></a-entity>
 
       </a-entity>
