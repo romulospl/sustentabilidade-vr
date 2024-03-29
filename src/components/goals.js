@@ -32,7 +32,7 @@ AFRAME.registerComponent('goal-object-left', {
 
             this.bindMethods()
             buttonStart.addEventListener('startgame', this.iniciarJogo)
-            this.iniciarJogo()
+            // this.iniciarJogo()
 
         } catch (error) {
             showLog(error)
