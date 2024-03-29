@@ -126,7 +126,6 @@ AFRAME.registerComponent('goal-object-left', {
         this.manipulador.setPosition(posicaoInicial)
     },
     adicionarAnimacao: function () {
-        // return
         this.removerAnimacao()
         this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
     },
