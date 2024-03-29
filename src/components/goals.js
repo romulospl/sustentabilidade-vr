@@ -56,11 +56,15 @@ AFRAME.registerComponent('goal-object-left', {
         this.modeloSorteado = sortearGoal(this.el)
 
         let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
-        manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+        if (manipuladorModeloSorteado.getPosition("y") < -2){
+            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+        }
     },
     removerModelo: function () {
         let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
-        manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+        if (manipuladorModeloSorteado.getPosition("y") > -2){
+            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+        }
     },
     irParaPosicaoInicial: function () {
         this.manipulador.setPosition(posicaoInicial)
