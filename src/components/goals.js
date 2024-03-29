@@ -48,7 +48,8 @@ function sortearGoal(el) {
 /*
 STATUS:
 {
-    'inicio': INICIO
+    'pronto' : PRONTO PARA INICIAR
+    'iniciado': INICIO
     'hoverStart': HOVER START
     3: 
 }
@@ -92,9 +93,11 @@ AFRAME.registerComponent('goal-object-left', {
         this.hoverStart = this.hoverStart.bind(this)
     },
     iniciarJogo: function () {
-        this.selecionarModelo()
-        this.adicionarAnimacao()
-
+        if(this.status === 'pronto'){
+            this.selecionarModelo()
+            this.adicionarAnimacao()
+            this.status = 'iniciado'
+        }
     },
     selecionarModelo: function () {
         // console.clear();
@@ -122,7 +125,8 @@ AFRAME.registerComponent('goal-object-left', {
         }
     },
     irParaPosicaoInicial: function () {
-        this.status = 'inicio'
+        this.status = 'pronto'
+        this.el.addEventListener('hover-start', this.hoverStart)
         this.manipulador.setPosition(posicaoInicial)
     },
     adicionarAnimacao: function () {
@@ -134,7 +138,6 @@ AFRAME.registerComponent('goal-object-left', {
     },
     verificarAreaEscape: function () {
         showLog("area escape")
-        // this.removerAnimacao()
         this.reiniciarGoal()
     },
     reiniciarGoal: function () {
@@ -143,9 +146,10 @@ AFRAME.registerComponent('goal-object-left', {
         this.iniciarJogo()
     },
     hoverStart: function () {
-        if (this.status === 'inicio') this.irParaAreaCentralizada()
+        if (this.status === 'iniciado') this.irParaAreaCentralizada()
     },
     irParaAreaCentralizada: function () {
+        this.el.removeEventListener('hover-start', this.hoverStart)
         this.status = 'hoverStart'
         let time = 2000
         try {
@@ -162,7 +166,7 @@ AFRAME.registerComponent('goal-object-left', {
         }
     },
     tick: function () {
-        if (this.modelosEscolhidos.length > 7) this.modelosEscolhidos = []
+        if (this.modelosEscolhidos.length > 5) this.modelosEscolhidos = []
     }
 });
 

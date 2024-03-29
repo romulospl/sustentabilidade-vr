@@ -46,6 +46,10 @@ export class ManipuladorObjects {
         this.el.classList.add(classe)
     }
 
+    removeClass(classe){
+        this.el.classList.remove(classe)
+    }
+
     getDataset(dataset) {
         for (const chave in this.el.dataset) {
             if (this.el.dataset.hasOwnProperty(chave) && this.el.dataset.hasOwnProperty(dataset)) {

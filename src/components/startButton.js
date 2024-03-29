@@ -12,7 +12,6 @@ AFRAME.registerComponent('start-button', {
             this.bindMethods()
             this.el.addEventListener('grab-start', this.hoverStart)
 
-            setTimeout(() => this.hoverStart(), 2000)
         } catch (error) {
             showLog(error)
         }
@@ -23,9 +22,9 @@ AFRAME.registerComponent('start-button', {
         this.hoverStart = this.hoverStart.bind(this)
     },
     hoverStart: function () {
+        this.el.removeEventListener('grab-start', this.hoverStart)
         try {
             let manipuladorButtonModel = new ManipuladorObjects(document.querySelector('#button-start'))
-
             manipuladorButtonModel.setPosition('0 -10 0')
             this.manipulador.setPosition('0 -10 0')
 
