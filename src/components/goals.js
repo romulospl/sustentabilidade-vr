@@ -27,7 +27,6 @@ AFRAME.registerComponent('goal-object-left', {
             let buttonStart = document.querySelector('#button-start-contato')
 
             buttonStart.addEventListener('startgame', this.iniciarJogo)
-            this.iniciarJogo()
         } catch (error) {
             showLog(error)
             console.log(error)
