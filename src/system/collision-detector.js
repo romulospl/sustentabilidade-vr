@@ -1,4 +1,5 @@
-import { showLog } from './showLogs'
+import { showLog } from '@/system/showLogs'
+
 
 AFRAME.registerComponent('collision', {
     schema: {
@@ -6,7 +7,9 @@ AFRAME.registerComponent('collision', {
     },
     tick: function () {
         if (this.data.area == '') return
-        var areaTridimensional = document.querySelector(this.data.area);
+        var areaTridimensional = document.querySelector(`${this.data.area}`);
+
+        if(!areaTridimensional) return
         var objetoPosicao = this.el.object3D.position.clone(); // Posição do objeto
         var areaTridimensionalPosicao = areaTridimensional.object3D.position.clone(); // Posição da área tridimensional
         var areaTridimensionalEscala = areaTridimensional.getAttribute('scale').clone(); // Escala da área tridimensional
@@ -24,5 +27,6 @@ AFRAME.registerComponent('collision', {
             // this.el.emit('isnotcolision');
             this.el.emit('collisionended'); // emite o fim da colisão
         }
+
     }
 });

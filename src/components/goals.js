@@ -15,32 +15,6 @@ function sortearGoal(el) {
     return document.getElementById(elementoAleatorio.id)
 }
 
-const selecionarModelo = (el) => {
-    let modeloSorteado = sortearGoal(el)
-
-    let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado)
-    manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
-}
-
-const irParaPosicaoInicial = (manipulador) => {
-    manipulador.setPosition("0 1.7 -63.14484")
-}
-
-function iniciarAnimacao(el, position) {
-    console.log(el)
-    el.setAttribute('animation', {
-        property: 'position',
-        to: position,
-        dur: 8500,
-        easing: 'linear',
-        loop: false
-    })
-}
-
-const iniciarJogo = (el, positionFinal) => {
-    selecionarModelo(el)
-    iniciarAnimacao(el, positionFinal)
-}
 
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -58,8 +32,8 @@ AFRAME.registerComponent('goal-object-left', {
 
             this.bindMethods()
             buttonStart.addEventListener('startgame', this.iniciarJogo)
+            this.iniciarJogo()
 
-            // setTimeout(this.iniciarJogo(), 2000)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -70,10 +44,12 @@ AFRAME.registerComponent('goal-object-left', {
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.iniciarAnimacao = this.iniciarAnimacao.bind(this)
+        this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
     },
     iniciarJogo: function () {
         this.selecionarModelo()
         this.iniciarAnimacao()
+        this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
     },
     selecionarModelo: function () {
         this.modeloSorteado = sortearGoal(this.el)
@@ -86,6 +62,9 @@ AFRAME.registerComponent('goal-object-left', {
     },
     iniciarAnimacao: function () {
         this.manipulador.addAnimation("-1.44571 1.42002 4.9347", 8000)
+    },
+    verificarAreaEscape: function (){
+        showLog("area escape")
     }
 
 });
