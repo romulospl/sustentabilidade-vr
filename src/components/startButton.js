@@ -11,12 +11,10 @@ AFRAME.registerComponent('start-button', {
 
             this.bindMethods()
             this.el.addEventListener('grab-start', this.hoverStart)
-            setTimeout(() => this.hoverStart(), 3000)
+            // setTimeout(() => this.hoverStart(), 3000)
         } catch (error) {
             showLog(error)
         }
-
-
     },
     bindMethods: function () {
         this.hoverStart = this.hoverStart.bind(this)

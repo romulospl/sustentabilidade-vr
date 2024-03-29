@@ -8,7 +8,7 @@
   <script src="https://sustentabilidadevr.pages.dev/aframe.min.js"></script>
   <script
     src="https://sustentabilidadevr.pages.dev/unpkg.com_aframe-environment-component@1.1.0_dist_aframe-environment-component.min.js"></script>
-  <script src="https://sustentabilidadevr.pages.dev/aframe-extras.misc.min.js"></script>
+  <!-- <script src="https://sustentabilidadevr.pages.dev/aframe-extras.misc.min.js"></script> -->
   <script src="https://sustentabilidadevr.pages.dev/super-hands.min.js"></script>
   <script src="https://sustentabilidadevr.pages.dev/aframe-extras.min.js"></script>
   <title>Game</title>
@@ -58,6 +58,10 @@
     <a-camera id="camera">
       <a-entity id="log" text="color: red; align: center; width: 0.5;" position="0 -0.0 -0.214"
         visible="false"></a-entity>
+      <a-entity id="log2" text="color: red; align: center; width: 0.5;" position="0 -0.05 -0.214"
+        visible="false"></a-entity>
+      <a-entity id="pontuacao" text="color: red; align: center ;width: 0.5; value: 0/10"
+        position="0.17516 0.09006 -0.7033"></a-entity>
     </a-camera>
 
     <!-- Hands -->
@@ -165,7 +169,11 @@
         geometry="primitive: box;" material="opacity: 0.5; color: green" position="0.49578 0.21476 -0.13823"
         collision="area: #goal-left;"></a-entity>
       <a-entity id="caixote-nao-sustentavel-left" rotation="0 -38.97144330920833 0" scale="0.555 0.555 0.555"
-        geometry="primitive: box;" material="opacity: 0.5; color: red" position="-0.52635 0.19523 -0.17362" collision="area: #goal-left;"></a-entity>
+        geometry="primitive: box;" material="opacity: 0.5; color: red" position="-0.52635 0.19523 -0.17362"
+        collision="area: #goal-left;"></a-entity>
+
+      <!-- armazenagem de dados -->
+      <a-entity id="store-valor-left" value="0"></a-entity>
 
 
     </a-entity>

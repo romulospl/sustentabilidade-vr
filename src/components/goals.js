@@ -1,5 +1,5 @@
 import { ManipuladorObjects } from '@/util/manipuladorObjects'
-import { showLog } from '@/system/showLogs'
+import { showLog, showLog2 } from '@/system/showLogs'
 
 const posicaoInicial = "0 1.7 -63.14484"
 const posicaoCentralizada = "0.03156 1.3189 -0.83031"
@@ -41,8 +41,16 @@ function sortearGoal(el) {
     let filhos = el.children
     let indiceAleatorio = Math.floor(Math.random() * filhos.length)
     let elementoAleatorio = filhos[indiceAleatorio]
+    let valor = getInfoModelo(elementoAleatorio.id).value == 1 ? true : false
     return { sorteado: document.getElementById(elementoAleatorio.id), value: getInfoModelo(elementoAleatorio.id).value }
 }
+
+// function getValueModelo(el) {
+//     let modelo = new ManipuladorObjects(el)
+//     const regex = /(-left|-right)/g;
+//     let elementoId = modelo.getElementId().replace(regex, "")
+//     return getInfoModelo(elementoId).value
+// }
 
 /*
 STATUS:
@@ -52,6 +60,21 @@ STATUS:
     'hoverStart': HOVER START
 }
 */
+
+const pontuacaoFinal = 2
+let pontuacao = 0
+// atualizarPontuacao()
+
+function atualizarPontuacao() {
+    document.querySelector('#pontuacao').setAttribute('text', {
+        value: `${pontuacao}/${pontuacaoFinal}`,
+        color: 'green'
+    })
+}
+
+setInterval(function() {
+    atualizarPontuacao()
+  }, 100);
 
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -89,10 +112,13 @@ AFRAME.registerComponent('goal-object-left', {
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
         this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
-        this.colocarNoCaixote = this.colocarNoCaixote.bind(this)
+        this.resetarOpcoesCaixote = this.resetarOpcoesCaixote.bind(this)
         this.removerModelo = this.removerModelo.bind(this)
         this.reiniciarGoal = this.reiniciarGoal.bind(this)
         this.hoverStart = this.hoverStart.bind(this)
+        this.verificarCaixotePositivo = this.verificarCaixotePositivo.bind(this)
+        this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
+        this.endGame = this.endGame.bind(this)
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -113,7 +139,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.modeloSorteado = modeloSorteado.sorteado
         this.pontuacao = modeloSorteado.value
 
-        console.log(`pontuação: ${this.pontuacao}`)
+        // console.log(`pontuação: ${this.modeloSorteado}`)
         this.modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
         let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
         if (manipuladorModeloSorteado.getPosition("y") < -2) {
@@ -139,13 +165,19 @@ AFRAME.registerComponent('goal-object-left', {
         this.manipulador.deleteAnimation()
     },
     verificarAreaEscape: function () {
-        showLog("area escape")
         this.reiniciarGoal()
     },
     reiniciarGoal: function () {
         this.removerModelo()
         this.irParaPosicaoInicial()
-        this.iniciarJogo()
+        setTimeout(() => {
+            if (pontuacao >= pontuacaoFinal) {
+                this.endGame()
+                return
+            } else {
+                this.iniciarJogo()
+            }
+        }, 500)
     },
     hoverStart: function () {
         if (this.status === 'iniciado') this.irParaAreaCentralizada()
@@ -159,8 +191,8 @@ AFRAME.registerComponent('goal-object-left', {
             this.manipulador.addAnimation(posicaoCentralizada, time)
             this.manipulador.removeAttribute('hoverable')
             setTimeout(() => {
-                this.caixaSustentavel.addEventListener('collisionstarted', this.colocarNoCaixote)
-                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.colocarNoCaixote)
+                this.caixaSustentavel.addEventListener('collisionstarted', this.verificarCaixotePositivo)
+                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.verificarCaixoteNegativo)
                 this.manipulador.addAttribute('grabbable')
                 this.removerAnimacao()
             }, (time + 500))
@@ -168,11 +200,26 @@ AFRAME.registerComponent('goal-object-left', {
             showLog(error)
         }
     },
-    colocarNoCaixote: function () {
-        this.caixaSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
-        this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
-        showLog(this.pontuacao)
+    verificarCaixotePositivo: function () {
+        this.resetarOpcoesCaixote()
+        if (this.pontuacao == 1) {
+            pontuacao++
+        } else {
+            showLog("Errou")
+        }
+    },
+    verificarCaixoteNegativo: function () {
+        this.resetarOpcoesCaixote()
+    },
+    resetarOpcoesCaixote: function () {
+        this.caixaSustentavel.removeEventListener('collisionstarted', this.verificarCaixotePositivo)
+        this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.verificarCaixoteNegativo)
         this.reiniciarGoal()
+    },
+    endGame: function () {
+        showLog("Desafio concluído", 'green')
+        console.clear()
+        console.log("Fim de jogo")
     },
     tick: function () {
         if (this.modelosEscolhidos.length > 7) this.modelosEscolhidos = []

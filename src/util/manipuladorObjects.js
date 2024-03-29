@@ -31,8 +31,13 @@ export class ManipuladorObjects {
     }
 
     addAttribute(atribute, value){
+        console.log(value)
         if(!value) value = ""
         this.el.setAttribute(atribute, value)
+    }
+
+    getAttribute(atribute){
+        this.el.getAttribute(atribute)
     }
 
     getPosition(dado) {
