@@ -50,7 +50,6 @@ STATUS:
     'pronto' : PRONTO PARA INICIAR
     'iniciado': INICIO
     'hoverStart': HOVER START
-    3: 
 }
 */
 
@@ -70,8 +69,8 @@ AFRAME.registerComponent('goal-object-left', {
 
             let buttonStart = document.querySelector('#button-start-contato')
 
-            this.caixaSustentavel = document.querySelector('#caixote-sustentavel')
-            this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel')
+            this.caixaSustentavel = document.querySelector('#caixote-sustentavel-left')
+            this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-left')
 
             this.bindMethods()
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
