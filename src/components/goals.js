@@ -2,6 +2,7 @@ import { ManipuladorObjects } from '@/util/manipuladorObjects'
 import { showLog } from '@/system/showLogs'
 
 const posicaoInicial = "0 1.7 -63.14484"
+const posicaoCentralizada = "0.03156 1.3189 -0.83031"
 
 function sortearGoal(el) {
     let filhos = el.children
@@ -31,6 +32,7 @@ AFRAME.registerComponent('goal-object-left', {
     init: function () {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
+            this.posicaoAlvo = "-1.12442 1.42 4.935"
 
             this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-left'))
 
@@ -84,7 +86,7 @@ AFRAME.registerComponent('goal-object-left', {
     },
     adicionarAnimacao: function () {
         this.removerAnimacao()
-        this.manipulador.addAnimation("-1.12442 1.42 4.935", 8000)
+        this.manipulador.addAnimation(this.posicaoAlvo, 8000)
     },
     removerAnimacao: function () {
         this.manipulador.deleteAnimation()
@@ -107,7 +109,7 @@ AFRAME.registerComponent('goal-object-left', {
         try {
             showLog(this.status)
             this.removerAnimacao()
-            this.manipulador.addAnimation("0.03156 1.3189 -0.83031", time)
+            this.manipulador.addAnimation(posicaoCentralizada, time)
             this.manipulador.removeAttribute('hoverable')
             setTimeout(() => {
                 this.manipulador.addAttribute('grabbable')
