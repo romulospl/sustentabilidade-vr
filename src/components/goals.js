@@ -41,8 +41,7 @@ function sortearGoal(el) {
     let filhos = el.children
     let indiceAleatorio = Math.floor(Math.random() * filhos.length)
     let elementoAleatorio = filhos[indiceAleatorio]
-    let filtro = getInfoModelo(elementoAleatorio.id).value
-    return { sorteado: document.getElementById(elementoAleatorio.id), value: filtro[0] ? filtro[0] : 0 }
+    return { sorteado: document.getElementById(elementoAleatorio.id), value: getInfoModelo(elementoAleatorio.id).value }
 }
 
 /*
@@ -173,7 +172,7 @@ AFRAME.registerComponent('goal-object-left', {
     colocarNoCaixote: function () {
         this.caixaSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
         this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.colocarNoCaixote)
-        showLog("No caixote")
+        showLog(this.pontuacao)
         this.reiniciarGoal()
     },
     tick: function () {
