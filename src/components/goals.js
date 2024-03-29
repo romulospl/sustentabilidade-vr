@@ -4,39 +4,45 @@ import { showLog } from '@/system/showLogs'
 const posicaoInicial = "0 1.7 -63.14484"
 const posicaoCentralizada = "0.03156 1.3189 -0.83031"
 const tempoDeAnimacao = 8000
-const regex = /(-left|-right)/g;
+
 
 const valorModels = [
-    { id: 'agricutura-sustentavel' , value: 1 },
-    { id: 'biocombustivel', value: 1},
-    { id: 'bioeletricidade', value: 1},
-    { id: 'cana-acucar', value: 1},
-    { id: 'conservacao-de-recursos-naturais', value: 1},
-    { id: 'descarbonizacao', value: 1},
-    { id: 'desenvolvimento-sustentavel', value: 1},
-    { id: 'eficiencia-energetica', value: 1},
-    { id: 'etanol-model', value: 1},
-    { id: 'reducao-de-emissoes-de-co2', value: 1},
-    { id: 'sustentabilidade-hidrica', value: 1},
-    // { id: , value: 1},
-    // { id: , value: 1},
-    // { id: , value: 1},
+    { id: 'agricutura-sustentavel', value: 1, altura: -0.52155 },
+    { id: 'biocombustivel', value: 1, altura: -0.52065 },
+    { id: 'bioeletricidade', value: 1, altura: -0.49548 },
+    { id: 'cana-acucar', value: 1, altura: -0.3 },
+    { id: 'conservacao-de-recursos-naturais', value: 1, altura: -0.5 },
+    { id: 'descarbonizacao', value: 1, altura: -0.45277 },
+    { id: 'desenvolvimento-sustentavel', value: 1, altura: -0.53 },
+    { id: 'eficiencia-energetica', value: 1, altura: -0.56 },
+    { id: 'etanol-model', value: 1, altura: -0.59494 },
+    { id: 'reducao-de-emissoes-de-co2', value: 1, altura: -0.55 },
+    { id: 'sustentabilidade-hidrica', value: 1, altura: -0.51 },
+    { id: 'combustivel-fossil', value: 0, altura: 1.47252 },
+    { id: 'desmatamento', value: 0, altura: 1.473 },
+    { id: 'desperdicio', value: 0, altura: 1.413 },
+    { id: 'emissoes-de-co2', value: 0, altura: 1.413 },
+    { id: 'energia-nao-renovavel', value: 0, altura: 1.413 },
+    { id: 'escassez-de-agua', value: 0, altura: 1.423 },
+    { id: 'gasolina', value: 0, altura: 1.413 },
+    { id: 'petroleo', value: 0, altura: 1.413 },
+    { id: 'poluicao-do-ar', value: 0, altura: 1.413 },
+    { id: 'queimandas', value: 0, altura: 1.413 },
 
 ]
+
+function getInfoModelo(id) {
+    const regex = /(-left|-right)/g;
+    let elementoId = id.replace(regex, "")
+    return valorModels.filter(v => v.id == elementoId)[0]
+}
 
 function sortearGoal(el) {
     let filhos = el.children
     let indiceAleatorio = Math.floor(Math.random() * filhos.length)
     let elementoAleatorio = filhos[indiceAleatorio]
-    // while (elementoAleatorio.id == anterior) {
-    //     indiceAleatorio = Math.floor(Math.random() * filhos.length)
-    //     elementoAleatorio = filhos[indiceAleatorio]
-    // }
-    
-    let d = document.getElementById(elementoAleatorio.id)
-    let elementoId = elementoAleatorio.id.replace(regex, "")
-    let filtro = valorModels.filter(v => v.id == elementoId).map(v => v.value)
-    return { sorteado: document.getElementById(elementoAleatorio.id), value: filtro[0]}
+    let filtro = getInfoModelo(elementoAleatorio.id).value
+    return { sorteado: document.getElementById(elementoAleatorio.id), value: filtro[0] ? filtro[0] : 0 }
 }
 
 /*
@@ -56,6 +62,7 @@ AFRAME.registerComponent('goal-object-left', {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
             this.posicaoAlvo = "-1.12442 1.42 4.935"
+            this.modelosEscolhidos = []
 
             this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-left'))
 
@@ -90,14 +97,22 @@ AFRAME.registerComponent('goal-object-left', {
 
     },
     selecionarModelo: function () {
-        let { sorteado, value } = sortearGoal(this.el)
-        this.modeloSorteado = sorteado
-        this.pontuacao = value
+        // console.clear();
+        let modeloSorteado = sortearGoal(this.el)
+        let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
+        while (this.modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
+            modeloSorteado = sortearGoal(this.el)
+            manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
+        }
+
+        this.modeloSorteado = modeloSorteado.sorteado
+        this.pontuacao = modeloSorteado.value
 
         console.log(`pontuação: ${this.pontuacao}`)
-        let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
+        this.modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
+        let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
         if (manipuladorModeloSorteado.getPosition("y") < -2) {
-            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") + 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
         }
     },
     removerModelo: function () {
@@ -111,6 +126,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.manipulador.setPosition(posicaoInicial)
     },
     adicionarAnimacao: function () {
+        // return
         this.removerAnimacao()
         this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
     },
@@ -145,8 +161,10 @@ AFRAME.registerComponent('goal-object-left', {
         } catch (error) {
             showLog(error)
         }
+    },
+    tick: function () {
+        if (this.modelosEscolhidos.length > 7) this.modelosEscolhidos = []
     }
-
 });
 
 
