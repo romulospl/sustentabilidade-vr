@@ -35,9 +35,10 @@
     <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: right"></a-entity>
 
     <!-- Ambiente -->
+    <a-entity id="sky-enviroment" scale="20 20 20" environment="ground: none;"></a-entity>
     <a-entity id="map-road1" scale="3.213 3.213 3.213" rotation="-180 1.352 -180" gltf-model="#plano"
-      position="-1.874 -1.72038 13.957"></a-entity>
-    <a-entity id="map-road2"  scale="3.213 3.213 3.213" rotation="-180 1.352 -180" gltf-model="#plano"
+      position="-1.874 -1.72 13.957"></a-entity>
+    <a-entity id="map-road2" scale="3.213 3.213 3.213" rotation="-180 1.352 -180" gltf-model="#plano"
       position="-2.87945 -1.72038 -17.19235"></a-entity>
     <a-light id="light1" light="intensity: 4.14" scale="0.829 0.829 0.829" position="-0.031 1.884 0.62931"
       rotation="117.251 84.993 -117.162"></a-light>
@@ -50,24 +51,27 @@
         scale="0.21585 0.22467 0.21585" position="0 0.831 -0.46235" material="opacity: 0"></a-box>
 
       <!-- Goal Left -->
-      <a-entity id="goal-left" grabbable scale="0.38238 0.38238 0.38238" class="target"
-        position="-0.897 1.345 -1.053" goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
+      <a-entity id="goal-left" grabbable scale="0.38238 0.38238 0.38238" class="target" position="-0.897 1.345 -1.053"
+        goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
         material="opacity: 0.1; color: red">
-        <a-entity id="cana-acucar-left" scale="0.243 0.243 0.243" gltf-model="#cana-acucar"
-          position="0 -10.3 0" visible="true" data-value="1">
+        <a-entity id="cana-acucar-left" scale="0.243 0.243 0.243" gltf-model="#cana-acucar" position="0 -10.3 0"
+          visible="true" data-value="1">
         </a-entity>
 
       </a-entity>
 
       <!-- Goal Right -->
-      <a-entity id="goal-right" grabbable  scale="0.38238 0.38238 0.38238" class="target"
-        position="1.047 1.308 -0.999" goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0.1; color: red">
+      <a-entity id="goal-right" grabbable scale="0.38238 0.38238 0.38238" class="target" position="1.047 1.308 -0.999"
+        goal-object="toPosition: 1 1.7 20;" color="red" geometry="primitive: box;" material="opacity: 0.1; color: red">
 
         <a-entity id="cana-acucar-right" scale="0.243 0.243 0.243" gltf-model="#cana-acucar"
           position="0.08334 -10.3 0.205" visible="true" data-contribui="true"></a-entity>
 
       </a-entity>
+
+      <!-- escape -->
+      <a-entity id="scape-left" geometry="primitive: box;" position="-1.44571 1.42002 4.9347"
+        material="opacity: 0.7; color: blue"></a-entity>
 
     </a-entity>
 
