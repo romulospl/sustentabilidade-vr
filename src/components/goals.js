@@ -135,8 +135,7 @@ AFRAME.registerComponent('goal-object-left', {
     iniciarJogo: function () {
         if (this.status === 'pronto') {
             this.selecionarModelo()
-            // setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
-            setTimeout(() => this.adicionarAnimacao(), 2000)
+            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
             this.status = 'iniciado'
         }
     },
@@ -303,8 +302,7 @@ AFRAME.registerComponent('goal-object-right', {
     iniciarJogo: function () {
         if (this.status === 'pronto') {
             this.selecionarModelo()
-            // setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
-            setTimeout(() => this.adicionarAnimacao(), 3000)
+            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
             this.status = 'iniciado'
         }
     },
