@@ -13,8 +13,8 @@ function escreverTempo(text) {
     });
 }
 
-let minutoOriginal = 3
-let segundoOriginal = 20
+let minutoOriginal = 5
+let segundoOriginal = 0
 let minutos = minutoOriginal;
 let segundos = segundoOriginal;
 
@@ -60,7 +60,7 @@ AFRAME.registerComponent('temporizador', {
             }
 
             escreverTempo(minutos, segundos);
-        }, 100);
+        }, 1000);
     },
     pararTempo: function () {
         clearInterval(this.temporizador)
