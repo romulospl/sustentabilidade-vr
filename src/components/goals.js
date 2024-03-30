@@ -48,7 +48,7 @@ function sortearGoal(el) {
 
 function getTempoAleatorio() {
     return (Math.floor(Math.random() * (3 - 1 + 1)) + 1) * 1000;
-  }
+}
 
 
 /*
@@ -57,6 +57,7 @@ STATUS:
     'pronto' : PRONTO PARA INICIAR
     'iniciado': INICIO
     'hoverStart': HOVER START
+    'aguardando': AGUARDANDO O OUTRO GOAL
 }
 */
 
@@ -71,9 +72,16 @@ function atualizarPontuacao() {
     })
 }
 
-setInterval(function() {
+function escreverLog(text){
+    document.querySelector('#pontuacao2').setAttribute('text', {
+        value: `${text}`,
+        color: 'blue'
+    })
+}
+
+setInterval(function () {
     atualizarPontuacao()
-  }, 100);
+}, 100);
 
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -122,7 +130,8 @@ AFRAME.registerComponent('goal-object-left', {
     iniciarJogo: function () {
         if (this.status === 'pronto') {
             this.selecionarModelo()
-            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
+            // setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
+            setTimeout(() => this.adicionarAnimacao(), 2000)
             this.status = 'iniciado'
         }
     },
@@ -184,6 +193,7 @@ AFRAME.registerComponent('goal-object-left', {
     irParaAreaCentralizada: function () {
         this.el.removeEventListener('hover-start', this.hoverStart)
         this.status = 'hoverStart'
+        this.el.emit('areaCentralizada')
         let time = 2000
         try {
             this.removerAnimacao()
@@ -214,6 +224,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.caixaSustentavel.removeEventListener('collisionstarted', this.verificarCaixotePositivo)
         this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.verificarCaixoteNegativo)
         this.reiniciarGoal()
+        this.el.emit('liberarmodelo')
     },
     endGame: function () {
         showLog("Desafio concluído", 'green')
@@ -240,6 +251,7 @@ AFRAME.registerComponent('goal-object-right', {
             this.irParaPosicaoInicial()
 
             let buttonStart = document.querySelector('#button-start-contato')
+            let outroGoal = document.querySelector('#goal-left')
 
             this.caixaSustentavel = document.querySelector('#caixote-sustentavel-right')
             this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-right')
@@ -248,6 +260,8 @@ AFRAME.registerComponent('goal-object-right', {
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
             buttonStart.addEventListener('startgame', this.iniciarJogo)
+            outroGoal.addEventListener('areaCentralizada', this.areaCentralizada)
+            outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -258,6 +272,8 @@ AFRAME.registerComponent('goal-object-right', {
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
+        this.areaCentralizada = this.areaCentralizada.bind(this)
+        this.liberarStatus = this.liberarStatus.bind(this)
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
         this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
@@ -272,7 +288,8 @@ AFRAME.registerComponent('goal-object-right', {
     iniciarJogo: function () {
         if (this.status === 'pronto') {
             this.selecionarModelo()
-            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
+            // setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
+            setTimeout(() => this.adicionarAnimacao(), 3000)
             this.status = 'iniciado'
         }
     },
@@ -302,9 +319,10 @@ AFRAME.registerComponent('goal-object-right', {
         }
     },
     irParaPosicaoInicial: function () {
+        this.manipulador.setPosition(posicaoInicial)
+        if (this.status === 'aguardando') return
         this.status = 'pronto'
         this.el.addEventListener('hover-start', this.hoverStart)
-        this.manipulador.setPosition(posicaoInicial)
     },
     adicionarAnimacao: function () {
         this.removerAnimacao()
@@ -371,8 +389,18 @@ AFRAME.registerComponent('goal-object-right', {
         console.clear()
         console.log("Fim de jogo")
     },
+    areaCentralizada: function () {
+        this.status = 'aguardando'
+        this.removerAnimacao()
+        this.reiniciarGoal()
+    },
+    liberarStatus: function () {
+        this.status = 'pronto'
+        this.reiniciarGoal()
+    },
     tick: function () {
         if (this.modelosEscolhidosRight.length > 7) this.modelosEscolhidosRight = []
+        escreverLog(this.status)
     }
 });
 
