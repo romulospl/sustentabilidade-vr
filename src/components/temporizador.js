@@ -13,7 +13,7 @@ function escreverTempo(text) {
     });
 }
 
-let minutoOriginal = 2
+let minutoOriginal = 3
 let segundoOriginal = 20
 let minutos = minutoOriginal;
 let segundos = segundoOriginal;

@@ -76,8 +76,6 @@ STATUS:
 }
 */
 
-
-
 // OBJECT LEFT
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -469,6 +467,9 @@ AFRAME.registerComponent('pontuacao', {
             this.manipulador = new ManipuladorObjects(this.el)
 
             let buttonStart = document.querySelector('#button-start-contato')
+            let temporizador = document.querySelector('#tempo')
+
+            temporizador.addEventListener('tempoesgotado', this.pararContabilizador)
             buttonStart.addEventListener('startgame', this.contabilizarPlacar)
         } catch (error) {
             showLog(error)
@@ -476,16 +477,26 @@ AFRAME.registerComponent('pontuacao', {
     },
     bindMethods: function () {
         this.contabilizarPlacar = this.contabilizarPlacar.bind(this)
+        this.zerarPlacar = this.zerarPlacar.bind(this)
+        this.pararContabilizador = this.pararContabilizador.bind(this)
     },
     contabilizarPlacar: function () {
         const self = this
-        const contabilizador = setInterval(function () {
+        pontuacao = 0
+
+        this.contabilizador = setInterval(function () {
             if (pontuacao >= pontuacaoFinal) {
-                clearInterval(contabilizador)
+                clearInterval(self.contabilizador)
                 self.el.emit('pontuacaoatingida')
                 return
             }
         }, 100);
+    },
+    zerarPlacar: function (){
+        pontuacao = 0
+    },
+    pararContabilizador: function(){
+        clearInterval(this.contabilizador)
     }
 });
 

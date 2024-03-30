@@ -12,7 +12,10 @@ AFRAME.registerComponent('start-button', {
             this.bindMethods()
 
             let temporizador = document.querySelector('#tempo')
+            let placar = document.querySelector('#pontuacao')
+
             temporizador.addEventListener('tempoesgotado', this.colocarPosicaoInicial)
+            placar.addEventListener('pontuacaoatingida', this.colocarPosicaoInicial)
             this.el.addEventListener('grab-start', this.hoverStart)
             // setTimeout(() => this.hoverStart(), 3000)
         } catch (error) {
