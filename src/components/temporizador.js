@@ -34,6 +34,7 @@ AFRAME.registerComponent('temporizador', {
     },
     bindMethods: function () {
         this.iniciarTemporizador = this.iniciarTemporizador.bind(this)
+        this.avisarTempoEsgotado = this.avisarTempoEsgotado.bind(this)
     },
     iniciarTemporizador: function () {
         const self = this
@@ -48,13 +49,17 @@ AFRAME.registerComponent('temporizador', {
             if (minutos == 0 && segundos <= 0) {
                 clearInterval(temporizador);
                 escreverTempo(0, 0);
+                self.avisarTempoEsgotado()
                 self.el.emit('tempoesgotado')
                 return;
             }
         
             escreverTempo(minutos, segundos);
-        }, 100);
+        }, 1000);
     },
+    avisarTempoEsgotado: function () {
+        showLog("Tempo esgotado")
+    }
     
 });
 
