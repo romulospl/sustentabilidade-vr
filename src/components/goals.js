@@ -50,17 +50,6 @@ function getTempoAleatorio() {
     return (Math.floor(Math.random() * (3 - 1 + 1)) + 1) * 1000;
 }
 
-
-/*
-STATUS:
-{
-    'pronto' : PRONTO PARA INICIAR
-    'iniciado': INICIO
-    'hoverStart': HOVER START
-    'aguardando': AGUARDANDO O OUTRO GOAL
-}
-*/
-
 const pontuacaoFinal = 2
 let pontuacao = 0
 // atualizarPontuacao()
@@ -79,10 +68,27 @@ function escreverLog(text){
     })
 }
 
+function placarAtigindo(){
+    if (pontuacao >= pontuacaoFinal) return true
+    return false
+}
+
 setInterval(function () {
     atualizarPontuacao()
 }, 100);
 
+
+/*
+STATUS:
+{
+    'pronto' : PRONTO PARA INICIAR
+    'iniciado': INICIO
+    'hoverStart': HOVER START
+    'aguardando': AGUARDANDO O OUTRO GOAL
+}
+*/
+
+// OBJECT LEFT
 AFRAME.registerComponent('goal-object-left', {
     schema: {
         toPosition: { default: '0 0 16.15' },
@@ -107,7 +113,7 @@ AFRAME.registerComponent('goal-object-left', {
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
             buttonStart.addEventListener('startgame', this.iniciarJogo)
-            outroGoal.addEventListener('areaCentralizada', this.areaCentralizada)
+            outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
         } catch (error) {
             showLog(error)
@@ -119,7 +125,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
-        this.areaCentralizada = this.areaCentralizada.bind(this)
+        this.resetarGoal = this.resetarGoal.bind(this)
         this.liberarStatus = this.liberarStatus.bind(this)
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
@@ -198,7 +204,7 @@ AFRAME.registerComponent('goal-object-left', {
     irParaAreaCentralizada: function () {
         this.el.removeEventListener('hover-start', this.hoverStart)
         this.status = 'hoverStart'
-        this.el.emit('areaCentralizada')
+        this.el.emit('resetarGoal')
         let time = 2000
         try {
             this.removerAnimacao()
@@ -236,7 +242,7 @@ AFRAME.registerComponent('goal-object-left', {
         console.clear()
         console.log("Fim de jogo")
     },
-    areaCentralizada: function () {
+    resetarGoal: function () {
         this.status = 'aguardando'
         this.removerAnimacao()
         this.reiniciarGoal()
@@ -247,9 +253,13 @@ AFRAME.registerComponent('goal-object-left', {
     },
     tick: function () {
         if (this.modelosEscolhidosLeft.length > 7) this.modelosEscolhidosLeft = []
+        // if (placarAtigindo()) this.reiniciarGoal()
     }
 });
 
+
+
+// OBJECT RIGHT
 AFRAME.registerComponent('goal-object-right', {
     schema: {
         toPosition: { default: '0 0 16.15' },
@@ -274,7 +284,7 @@ AFRAME.registerComponent('goal-object-right', {
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
             buttonStart.addEventListener('startgame', this.iniciarJogo)
-            outroGoal.addEventListener('areaCentralizada', this.areaCentralizada)
+            outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
         } catch (error) {
             showLog(error)
@@ -286,7 +296,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
-        this.areaCentralizada = this.areaCentralizada.bind(this)
+        this.resetarGoal = this.resetarGoal.bind(this)
         this.liberarStatus = this.liberarStatus.bind(this)
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
@@ -366,7 +376,7 @@ AFRAME.registerComponent('goal-object-right', {
     irParaAreaCentralizada: function () {
         this.el.removeEventListener('hover-start', this.hoverStart)
         this.status = 'hoverStart'
-        this.el.emit('areaCentralizada')
+        this.el.emit('resetarGoal')
         let time = 2000
         try {
             this.removerAnimacao()
@@ -404,7 +414,7 @@ AFRAME.registerComponent('goal-object-right', {
         console.clear()
         console.log("Fim de jogo")
     },
-    areaCentralizada: function () {
+    resetarGoal: function () {
         this.status = 'aguardando'
         this.removerAnimacao()
         this.reiniciarGoal()
@@ -415,7 +425,7 @@ AFRAME.registerComponent('goal-object-right', {
     },
     tick: function () {
         if (this.modelosEscolhidosRight.length > 7) this.modelosEscolhidosRight = []
-        // escreverLog(this.status)
+        // if (placarAtigindo()) this.reiniciarGoal()
     }
 });
 
