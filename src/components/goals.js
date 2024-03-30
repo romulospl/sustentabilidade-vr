@@ -61,11 +61,16 @@ function atualizarPontuacao() {
     })
 }
 
-function escreverLog(text){
-    document.querySelector('#pontuacao2').setAttribute('text', {
-        value: `${text}`,
-        color: 'blue'
-    })
+function escreverTempo(text){
+    const minutosFormatados = minutos.toString().padStart(2, '0');
+    const segundosFormatados = segundos.toString().padStart(2, '0');
+    
+    const tempoFormatado = `${minutosFormatados}:${segundosFormatados}`;
+    
+    document.querySelector('#tempo').setAttribute('text', {
+        value: tempoFormatado,
+        color: (minutos == 0 && segundos <= 30) ? 'red' : 'black'
+    });
 }
 
 function placarAtigindo(){
@@ -77,6 +82,30 @@ setInterval(function () {
     atualizarPontuacao()
 }, 100);
 
+let minutos = 2;
+let segundos = 0;
+
+const temporizador = setInterval(function() {
+    // Diminui um segundo
+    segundos--;
+
+    // Se os segundos chegarem a zero, diminua os minutos
+    if (segundos < 0) {
+        segundos = 59;
+        minutos--;
+        
+        // Se o tempo acabou, limpe o intervalo
+    }
+
+    if (minutos == 0 && segundos <= 0) {
+        clearInterval(temporizador);
+        escreverTempo(0, 0);
+        return;
+    }
+
+    // Atualiza o texto exibido
+    escreverTempo(minutos, segundos);
+}, 1000);
 
 /*
 STATUS:

@@ -52,6 +52,9 @@
       <a-asset-item id="petroleo-model" src="/assets/obj-insustentavel/petroleo.glb"></a-asset-item>
       <a-asset-item id="poluicao-do-ar-model" src="/assets/obj-insustentavel/poluicao-do-ar.glb"></a-asset-item>
       <a-asset-item id="queimandas-model" src="/assets/obj-insustentavel/queimandas.glb"></a-asset-item>
+
+      <!-- imagens -->
+      <img id="fundo-branco-model" src="/assets/images/fundo-branco.png" />
     </a-assets>
 
     <!-- Camera -->
@@ -60,9 +63,15 @@
         visible="false"></a-entity>
       <a-entity id="log2" text="color: red; align: center; width: 0.5;" position="0 -0.05 -0.214"
         visible="false"></a-entity>
+
+        <a-image id="fundo-branco1" position="0.17516 0.09006 -0.7033" scale="0.05 0.03 0.06" src="#fundo-branco-model"
+        visible="true"></a-image>
       <a-entity id="pontuacao" text="color: red; align: center ;width: 0.5; value: 0/10"
         position="0.17516 0.09006 -0.7033"></a-entity>
-      <a-entity id="pontuacao2" text="color: red; align: center ;width: 0.5; value: 0/10"
+
+      <a-image id="fundo-branco2" position="-0.17516 0.09006 -0.7033" scale="0.06 0.03 0.06" src="#fundo-branco-model"
+       visible="true"></a-image>
+      <a-entity id="tempo" text="color: red; align: center ;width: 0.5; value: "
         position="-0.17516 0.09006 -0.7033"></a-entity>
     </a-camera>
 
