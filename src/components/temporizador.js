@@ -1,12 +1,12 @@
 import { showLog } from '@/system/showLogs'
 import { ManipuladorObjects } from '@/util/manipuladorObjects'
 
-function escreverTempo(text){
+function escreverTempo(text) {
     const minutosFormatados = minutos.toString().padStart(2, '0');
     const segundosFormatados = segundos.toString().padStart(2, '0');
-    
+
     const tempoFormatado = `${minutosFormatados}:${segundosFormatados}`;
-    
+
     document.querySelector('#tempo').setAttribute('text', {
         value: tempoFormatado,
         color: (minutos == 0 && segundos <= 30) ? 'red' : 'black'
@@ -14,8 +14,8 @@ function escreverTempo(text){
 }
 
 
-let minutos = 1;
-let segundos = 0;
+let minutos = 4;
+let segundos = 30;
 
 AFRAME.registerComponent('temporizador', {
     schema: {
@@ -26,8 +26,10 @@ AFRAME.registerComponent('temporizador', {
             this.manipulador = new ManipuladorObjects(this.el)
 
             let buttonStart = document.querySelector('#button-start-contato')
+            let placar = document.querySelector('#pontuacao')
 
             buttonStart.addEventListener('startgame', this.iniciarTemporizador)
+            placar.addEventListener('pontuacaoatingida', this.pararTempo)
         } catch (error) {
             showLog(error)
         }
@@ -35,31 +37,35 @@ AFRAME.registerComponent('temporizador', {
     bindMethods: function () {
         this.iniciarTemporizador = this.iniciarTemporizador.bind(this)
         this.avisarTempoEsgotado = this.avisarTempoEsgotado.bind(this)
+        this.pararTempo = this.pararTempo.bind(this)
     },
     iniciarTemporizador: function () {
         const self = this
-        const temporizador = setInterval(function() {
+        this.temporizador = setInterval(function () {
             segundos--;
-        
+
             if (segundos < 0) {
                 segundos = 59;
                 minutos--;
             }
-        
+
             if (minutos == 0 && segundos <= 0) {
-                clearInterval(temporizador);
+                clearInterval(self.temporizador);
                 escreverTempo(0, 0);
                 self.avisarTempoEsgotado()
                 self.el.emit('tempoesgotado')
                 return;
             }
-        
+
             escreverTempo(minutos, segundos);
         }, 1000);
+    },
+    pararTempo: function () {
+        clearInterval(this.temporizador)
     },
     avisarTempoEsgotado: function () {
         showLog("Tempo esgotado")
     }
-    
+
 });
 

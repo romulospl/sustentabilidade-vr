@@ -59,9 +59,11 @@ function atualizarPontuacao() {
         color: 'green'
     })
 }
+let modelosEscolhidos = []
 
 setInterval(function () {
     atualizarPontuacao()
+    if (modelosEscolhidos.length > 15) modelosEscolhidos = []
 }, 100);
 
 /*
@@ -74,6 +76,8 @@ STATUS:
 }
 */
 
+
+
 // OBJECT LEFT
 AFRAME.registerComponent('goal-object-left', {
     schema: {
@@ -83,8 +87,6 @@ AFRAME.registerComponent('goal-object-left', {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
             this.posicaoAlvo = "-1.12442 1.42 4.935"
-            this.modelosEscolhidosLeft = []
-
             this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-left'))
 
             this.irParaPosicaoInicial()
@@ -92,6 +94,7 @@ AFRAME.registerComponent('goal-object-left', {
             let buttonStart = document.querySelector('#button-start-contato')
             let outroGoal = document.querySelector('#goal-right')
             let temporizador = document.querySelector('#tempo')
+            this.placar = document.querySelector('#pontuacao')
 
             this.caixaSustentavel = document.querySelector('#caixote-sustentavel-left')
             this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-left')
@@ -103,6 +106,7 @@ AFRAME.registerComponent('goal-object-left', {
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
             temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
+            this.placar.addEventListener('pontuacaoatingida', this.pontuacaoatingida)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -126,6 +130,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
         this.endGame = this.endGame.bind(this)
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
+        this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -138,7 +143,7 @@ AFRAME.registerComponent('goal-object-left', {
         // console.clear();
         let modeloSorteado = sortearGoal(this.el)
         let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        while (this.modelosEscolhidosLeft.includes(manipuladorModeloSorteado.getElementId())) {
+        while (modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
             modeloSorteado = sortearGoal(this.el)
             manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
         }
@@ -147,7 +152,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.pontuacao = modeloSorteado.value
 
         // console.log(`pontuação: ${this.modeloSorteado}`)
-        this.modelosEscolhidosLeft.push(manipuladorModeloSorteado.getElementId())
+        modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
         let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
         if (manipuladorModeloSorteado.getPosition("y") < -2) {
             manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
@@ -180,7 +185,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.irParaPosicaoInicial()
         setTimeout(() => {
             if (pontuacao >= pontuacaoFinal) {
-                this.endGame()
+                // this.endGame()
                 return
             } else {
                 this.iniciarJogo()
@@ -227,9 +232,15 @@ AFRAME.registerComponent('goal-object-left', {
         this.el.emit('liberarmodelo')
     },
     endGame: function () {
+        this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
+        this.pontuacaoatingida()
+    },
+    pontuacaoatingida: function (){
+        
         showLog("Desafio concluído", 'green')
-        console.clear()
+        // console.clear()
         console.log("Fim de jogo")
+        this.resetarGoal()
     },
     resetarGoal: function () {
         this.status = 'aguardando'
@@ -244,7 +255,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.resetarGoal()
     },
     tick: function () {
-        if (this.modelosEscolhidosLeft.length > 7) this.modelosEscolhidosLeft = []
+        // 
         // if (placarAtigindo()) this.reiniciarGoal()
     }
 });
@@ -260,7 +271,6 @@ AFRAME.registerComponent('goal-object-right', {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
             this.posicaoAlvo = "1.12442 1.42 4.935"
-            this.modelosEscolhidosRight = []
 
             this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-right'))
 
@@ -269,6 +279,7 @@ AFRAME.registerComponent('goal-object-right', {
             let buttonStart = document.querySelector('#button-start-contato')
             let outroGoal = document.querySelector('#goal-left')
             let temporizador = document.querySelector('#tempo')
+            this.placar = document.querySelector('#pontuacao')
 
             this.caixaSustentavel = document.querySelector('#caixote-sustentavel-right')
             this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-right')
@@ -280,6 +291,7 @@ AFRAME.registerComponent('goal-object-right', {
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
             temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
+            this.placar.addEventListener('pontuacaoatingida', this.pontuacaoatingida)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -303,6 +315,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
         this.endGame = this.endGame.bind(this)
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
+        this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -315,7 +328,7 @@ AFRAME.registerComponent('goal-object-right', {
         // console.clear();
         let modeloSorteado = sortearGoal(this.el)
         let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        while (this.modelosEscolhidosRight.includes(manipuladorModeloSorteado.getElementId())) {
+        while (modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
             modeloSorteado = sortearGoal(this.el)
             manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
         }
@@ -324,7 +337,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.pontuacao = modeloSorteado.value
 
         // console.log(`pontuação: ${this.modeloSorteado}`)
-        this.modelosEscolhidosRight.push(manipuladorModeloSorteado.getElementId())
+        modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
         let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
         if (manipuladorModeloSorteado.getPosition("y") < -2) {
             manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
@@ -357,7 +370,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.irParaPosicaoInicial()
         setTimeout(() => {
             if (pontuacao >= pontuacaoFinal) {
-                this.endGame()
+                // this.endGame()
                 return
             }
             else {
@@ -405,9 +418,15 @@ AFRAME.registerComponent('goal-object-right', {
         this.el.emit('liberarmodelo')
     },
     endGame: function () {
+        this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
+        this.pontuacaoatingida()
+    },
+    pontuacaoatingida: function (){
+        
         showLog("Desafio concluído", 'green')
-        console.clear()
+        // console.clear()
         console.log("Fim de jogo")
+        this.resetarGoal()
     },
     resetarGoal: function () {
         this.status = 'aguardando'
@@ -422,8 +441,37 @@ AFRAME.registerComponent('goal-object-right', {
         this.resetarGoal()
     },
     tick: function () {
-        if (this.modelosEscolhidosRight.length > 7) this.modelosEscolhidosRight = []
+        // if (modelosEscolhidos.length > 7) modelosEscolhidos = []
         // if (placarAtigindo()) this.reiniciarGoal()
+    }
+});
+
+AFRAME.registerComponent('pontuacao', {
+    schema: {
+    },
+    init: function () {
+        try {
+            this.bindMethods()
+            this.manipulador = new ManipuladorObjects(this.el)
+
+            let buttonStart = document.querySelector('#button-start-contato')
+            buttonStart.addEventListener('startgame', this.contabilizarPlacar)
+        } catch (error) {
+            showLog(error)
+        }
+    },
+    bindMethods: function () {
+        this.contabilizarPlacar = this.contabilizarPlacar.bind(this)
+    },
+    contabilizarPlacar: function () {
+        const self = this
+        const contabilizador = setInterval(function () {
+            if (pontuacao >= pontuacaoFinal) {
+                clearInterval(contabilizador)
+                self.el.emit('pontuacaoatingida')
+                return
+            }
+        }, 100);
     }
 });
 

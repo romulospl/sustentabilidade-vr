@@ -67,7 +67,7 @@
         <a-image id="fundo-branco1" position="0.17516 0.09006 -0.7033" scale="0.05 0.03 0.06" src="#fundo-branco-model"
         visible="true"></a-image>
       <a-entity id="pontuacao" text="color: red; align: center ;width: 0.5; value: 0/10"
-        position="0.17516 0.09006 -0.7033"></a-entity>
+        position="0.17516 0.09006 -0.7033" pontuacao></a-entity>
 
       <a-image id="fundo-branco2" position="-0.17516 0.09006 -0.7033" scale="0.06 0.03 0.06" src="#fundo-branco-model"
        visible="true"></a-image>
@@ -104,7 +104,7 @@
       <!-- Goal Left -->
       <a-entity id="goal-left" scale="0.57972 0.57972 0.57972" class="target" position="-0.897 1.345 -1.053"
         goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
-        material="opacity: 0.1; color: red" collision="area: #scape-left;">
+        material="opacity: 0; color: red" collision="area: #scape-left;">
 
         <!-- modelos positivos -->
         <a-entity id="agricutura-sustentavel-left" scale="0.243 0.243 0.243" gltf-model="#agricutura-sustentavel-model"
@@ -169,7 +169,7 @@
       <!-- Goal Right -->
       <a-entity id="goal-right" scale="0.57972 0.57972 0.57972" class="target" position="-0.897 1.345 -1.053"
         goal-object-right="toPosition: -1 1.7 20;" color="blue" geometry="primitive: box;"
-        material="opacity: 0.1; color: red" collision="area: #scape-right;">
+        material="opacity: 0; color: red" collision="area: #scape-right;">
 
         <!-- modelos positivos -->
         <a-entity id="agricutura-sustentavel-right" scale="0.243 0.243 0.243" gltf-model="#agricutura-sustentavel-model"
@@ -235,9 +235,9 @@
       <!-- <a-entity id="scape-left" geometry="primitive: box;" position="-1.124 1.42 -1.2889"
         material="opacity: 0; color: blue" scale="1 1 1"></a-entity> -->
       <a-entity id="scape-left" geometry="primitive: box;" position="-1.12442 1.42 4.935"
-        material="opacity: 0.7; color: blue"></a-entity>
+        material="opacity: 0; color: blue"></a-entity>
       <a-entity id="scape-right" geometry="primitive: box;" position="1.12442 1.42 4.935"
-        material="opacity: 0.7; color: orange"></a-entity>
+        material="opacity: 0; color: orange"></a-entity>
 
       <!-- pontos de sensibilidade do caixote -->
       <a-entity id="caixote-sustentavel-left" rotation="0 48.310082412045624 0" scale="0.555 0.555 0.555"

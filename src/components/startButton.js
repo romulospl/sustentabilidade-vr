@@ -11,7 +11,7 @@ AFRAME.registerComponent('start-button', {
 
             this.bindMethods()
             this.el.addEventListener('grab-start', this.hoverStart)
-            setTimeout(() => this.hoverStart(), 6000)
+            // setTimeout(() => this.hoverStart(), 3000)
         } catch (error) {
             showLog(error)
         }
@@ -26,6 +26,7 @@ AFRAME.registerComponent('start-button', {
             manipuladorButtonModel.setPosition('0 -10 0')
             this.manipulador.setPosition('0 -10 0')
 
+            setTimeout(() => this.el.addEventListener('grab-start', this.hoverStart), 2000)
             this.el.emit('startgame')
         } catch (error) {
             showLog(error)
