@@ -13,9 +13,10 @@ function escreverTempo(text) {
     });
 }
 
-
-let minutos = 2;
-let segundos = 0;
+let minutoOriginal = 2
+let segundoOriginal = 20
+let minutos = minutoOriginal;
+let segundos = segundoOriginal;
 
 AFRAME.registerComponent('temporizador', {
     schema: {
@@ -40,6 +41,7 @@ AFRAME.registerComponent('temporizador', {
         this.pararTempo = this.pararTempo.bind(this)
     },
     iniciarTemporizador: function () {
+        this.zerarTempo()
         const self = this
         this.temporizador = setInterval(function () {
             segundos--;
@@ -58,13 +60,17 @@ AFRAME.registerComponent('temporizador', {
             }
 
             escreverTempo(minutos, segundos);
-        }, 1000);
+        }, 100);
     },
     pararTempo: function () {
         clearInterval(this.temporizador)
     },
     avisarTempoEsgotado: function () {
         showLog("Tempo esgotado")
+    },
+    zerarTempo: function(){
+        minutos = minutoOriginal;
+        segundos = segundoOriginal;
     }
 
 });

@@ -46,7 +46,7 @@ function sortearGoal(el) {
 }
 
 function getTempoAleatorio() {
-    return (Math.floor(Math.random() * (3 - 1 + 1)) + 1) * 1000;
+    return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) * 1000;
 }
 
 const pontuacaoFinal = 4
@@ -102,7 +102,8 @@ AFRAME.registerComponent('goal-object-left', {
             this.bindMethods()
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
-            buttonStart.addEventListener('startgame', this.iniciarJogo)
+            buttonStart.addEventListener('startgame', this.startPressionado)
+            // buttonStart.addEventListener('startgame', this.iniciarJogo)
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
             temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
@@ -114,6 +115,7 @@ AFRAME.registerComponent('goal-object-left', {
     },
     bindMethods: function () {
         this.iniciarJogo = this.iniciarJogo.bind(this)
+        this.startPressionado = this.startPressionado.bind(this)
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
@@ -131,6 +133,11 @@ AFRAME.registerComponent('goal-object-left', {
         this.endGame = this.endGame.bind(this)
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
         this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
+    },
+    startPressionado: function (){
+        this.status = 'pronto'
+        this.irParaPosicaoInicial()
+        this.iniciarJogo()
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -287,7 +294,8 @@ AFRAME.registerComponent('goal-object-right', {
             this.bindMethods()
             this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
             this.el.addEventListener('hover-start', this.hoverStart)
-            buttonStart.addEventListener('startgame', this.iniciarJogo)
+            buttonStart.addEventListener('startgame', this.startPressionado)
+            // buttonStart.addEventListener('startgame', this.iniciarJogo)
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
             temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
@@ -299,6 +307,7 @@ AFRAME.registerComponent('goal-object-right', {
     },
     bindMethods: function () {
         this.iniciarJogo = this.iniciarJogo.bind(this)
+        this.startPressionado = this.startPressionado.bind(this)
         this.selecionarModelo = this.selecionarModelo.bind(this)
         this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
         this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
@@ -316,6 +325,11 @@ AFRAME.registerComponent('goal-object-right', {
         this.endGame = this.endGame.bind(this)
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
         this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
+    },
+    startPressionado: function (){
+        this.status = 'pronto'
+        this.irParaPosicaoInicial()
+        this.iniciarJogo()
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
