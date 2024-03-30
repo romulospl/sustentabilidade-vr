@@ -14,8 +14,8 @@ function escreverTempo(text) {
 }
 
 
-let minutos = 4;
-let segundos = 30;
+let minutos = 2;
+let segundos = 0;
 
 AFRAME.registerComponent('temporizador', {
     schema: {
