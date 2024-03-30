@@ -29,7 +29,6 @@ const valorModels = [
     { id: 'petroleo', value: 0, altura: 1.413 },
     { id: 'poluicao-do-ar', value: 0, altura: 1.413 },
     { id: 'queimandas', value: 0, altura: 1.413 },
-
 ]
 
 function getInfoModelo(id) {
@@ -61,51 +60,9 @@ function atualizarPontuacao() {
     })
 }
 
-function escreverTempo(text){
-    const minutosFormatados = minutos.toString().padStart(2, '0');
-    const segundosFormatados = segundos.toString().padStart(2, '0');
-    
-    const tempoFormatado = `${minutosFormatados}:${segundosFormatados}`;
-    
-    document.querySelector('#tempo').setAttribute('text', {
-        value: tempoFormatado,
-        color: (minutos == 0 && segundos <= 30) ? 'red' : 'black'
-    });
-}
-
-function placarAtigindo(){
-    if (pontuacao >= pontuacaoFinal) return true
-    return false
-}
-
 setInterval(function () {
     atualizarPontuacao()
 }, 100);
-
-let minutos = 2;
-let segundos = 0;
-
-const temporizador = setInterval(function() {
-    // Diminui um segundo
-    segundos--;
-
-    // Se os segundos chegarem a zero, diminua os minutos
-    if (segundos < 0) {
-        segundos = 59;
-        minutos--;
-        
-        // Se o tempo acabou, limpe o intervalo
-    }
-
-    if (minutos == 0 && segundos <= 0) {
-        clearInterval(temporizador);
-        escreverTempo(0, 0);
-        return;
-    }
-
-    // Atualiza o texto exibido
-    escreverTempo(minutos, segundos);
-}, 1000);
 
 /*
 STATUS:
@@ -113,7 +70,7 @@ STATUS:
     'pronto' : PRONTO PARA INICIAR
     'iniciado': INICIO
     'hoverStart': HOVER START
-    'aguardando': AGUARDANDO O OUTRO GOAL
+    'aguardando': AGUARDANDO O RESTART OU OUTRO GOAL FINALIZAR O FLUXO
 }
 */
 
@@ -134,6 +91,7 @@ AFRAME.registerComponent('goal-object-left', {
 
             let buttonStart = document.querySelector('#button-start-contato')
             let outroGoal = document.querySelector('#goal-right')
+            let temporizador = document.querySelector('#tempo')
 
             this.caixaSustentavel = document.querySelector('#caixote-sustentavel-left')
             this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-left')
@@ -144,6 +102,7 @@ AFRAME.registerComponent('goal-object-left', {
             buttonStart.addEventListener('startgame', this.iniciarJogo)
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
+            temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -166,6 +125,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.verificarCaixotePositivo = this.verificarCaixotePositivo.bind(this)
         this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
         this.endGame = this.endGame.bind(this)
+        this.tempoEsgotado = this.tempoEsgotado.bind(this)
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -280,6 +240,9 @@ AFRAME.registerComponent('goal-object-left', {
         this.status = 'pronto'
         this.reiniciarGoal()
     },
+    tempoEsgotado: function () {
+        this.resetarGoal()
+    },
     tick: function () {
         if (this.modelosEscolhidosLeft.length > 7) this.modelosEscolhidosLeft = []
         // if (placarAtigindo()) this.reiniciarGoal()
@@ -305,6 +268,7 @@ AFRAME.registerComponent('goal-object-right', {
 
             let buttonStart = document.querySelector('#button-start-contato')
             let outroGoal = document.querySelector('#goal-left')
+            let temporizador = document.querySelector('#tempo')
 
             this.caixaSustentavel = document.querySelector('#caixote-sustentavel-right')
             this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-right')
@@ -315,6 +279,7 @@ AFRAME.registerComponent('goal-object-right', {
             buttonStart.addEventListener('startgame', this.iniciarJogo)
             outroGoal.addEventListener('resetarGoal', this.resetarGoal)
             outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
+            temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
         } catch (error) {
             showLog(error)
             console.log(error)
@@ -337,6 +302,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.verificarCaixotePositivo = this.verificarCaixotePositivo.bind(this)
         this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
         this.endGame = this.endGame.bind(this)
+        this.tempoEsgotado = this.tempoEsgotado.bind(this)
     },
     iniciarJogo: function () {
         if (this.status === 'pronto') {
@@ -378,7 +344,6 @@ AFRAME.registerComponent('goal-object-right', {
     },
     adicionarAnimacao: function () {
         this.removerAnimacao()
-        console.log(this.posicaoAlvo)
         this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
     },
     removerAnimacao: function () {
@@ -394,7 +359,8 @@ AFRAME.registerComponent('goal-object-right', {
             if (pontuacao >= pontuacaoFinal) {
                 this.endGame()
                 return
-            } else {
+            }
+            else {
                 this.iniciarJogo()
             }
         }, 500)
@@ -451,6 +417,9 @@ AFRAME.registerComponent('goal-object-right', {
     liberarStatus: function () {
         this.status = 'pronto'
         this.reiniciarGoal()
+    },
+    tempoEsgotado: function () {
+        this.resetarGoal()
     },
     tick: function () {
         if (this.modelosEscolhidosRight.length > 7) this.modelosEscolhidosRight = []
