@@ -1,20 +1,28 @@
 import { showLog } from '@/system/showLogs'
 import { ManipuladorObjects } from '@/util/manipuladorObjects'
 
+const somTempoRestante = document.querySelector('#tempo-restante-sound')
+const somNotificacao = document.querySelector('#notification-sound')
+
+
+
 function escreverTempo(text) {
     const minutosFormatados = minutos.toString().padStart(2, '0');
     const segundosFormatados = segundos.toString().padStart(2, '0');
 
+    
     const tempoFormatado = `${minutosFormatados}:${segundosFormatados}`;
-
+    if(minutos == 0 && segundos <= 2){
+        somTempoRestante.components.sound.playSound()
+    }
     document.querySelector('#tempo').setAttribute('text', {
         value: tempoFormatado,
         color: (minutos == 0 && segundos <= 30) ? 'red' : 'black'
     });
 }
 
-let minutoOriginal = 5
-let segundoOriginal = 0
+let minutoOriginal = 2
+let segundoOriginal = 30
 let minutos = minutoOriginal;
 let segundos = segundoOriginal;
 
@@ -53,6 +61,7 @@ AFRAME.registerComponent('temporizador', {
 
             if (minutos == 0 && segundos <= 0) {
                 clearInterval(self.temporizador);
+                somNotificacao.components.sound.playSound()
                 escreverTempo(0, 0);
                 self.avisarTempoEsgotado()
                 self.el.emit('tempoesgotado')
