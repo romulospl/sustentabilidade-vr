@@ -66,6 +66,8 @@ setInterval(function () {
     if (modelosEscolhidos.length > 15) modelosEscolhidos = []
 }, 100);
 
+const somPontuado = document.querySelector('#pontuado-som')
+
 /*
 STATUS:
 {
@@ -222,6 +224,7 @@ AFRAME.registerComponent('goal-object-left', {
     verificarCaixotePositivo: function () {
         this.resetarOpcoesCaixote()
         if (this.pontuacao == 1) {
+            somPontuado.components.sound.playSound()
             pontuacao++
         } else {
             showLog("Errou")
@@ -415,6 +418,7 @@ AFRAME.registerComponent('goal-object-right', {
     verificarCaixotePositivo: function () {
         this.resetarOpcoesCaixote()
         if (this.pontuacao == 1) {
+            somPontuado.components.sound.playSound()
             pontuacao++
         } else {
             showLog("Errou")
