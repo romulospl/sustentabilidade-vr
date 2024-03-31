@@ -93,8 +93,8 @@
       <!-- mensagens -->
       <a-entity id="msg-desafio-concluido" position="0 0 -3" scale="0.3 0.3 0.3" geometry="primitive: box;"
         material="opacity: 0; color: red" visible="false">
-        <a-entity scale="0.2 0.2 0.2"
-          position="-70.45365 -8.35514 36.71929" gltf-model="#desafio-concluido-model"></a-entity>
+        <a-entity scale="0.2 0.2 0.2" position="-70.45365 -8.35514 36.71929"
+          gltf-model="#desafio-concluido-model"></a-entity>
       </a-entity>
 
       <a-entity id="msg-tempo-esgotado" position="0 0 -3" scale="0.3 0.3 0.3" geometry="primitive: box;"
@@ -268,20 +268,22 @@
       <a-entity id="scape-right" geometry="primitive: box;" position="1.12442 1.42 4.935"
         material="opacity: 0; color: orange"></a-entity>
 
-      <!-- pontos de sensibilidade do caixote -->
+      <!-- pontos de sensibilidade do caixote sustentável -->
       <a-entity id="caixote-sustentavel-left" rotation="0 48.31 0" scale="0.555 0.555 0.555" geometry="primitive: box;"
-        material="opacity: 0.1; color: green" position="0.52253 0.055 -0.09561"
+        material="opacity: 0; color: green" position="0.52253 0.055 -0.09561"
         collision="area: #goal-left;"></a-entity>
       <a-entity id="caixote-sustentavel-right" rotation="0 48.31 0" scale="0.555 0.555 0.555" scale="0.555 0.555 0.555"
-        geometry="primitive: box;" material="opacity: 0.1; color: green" position="0.523 0.055 -0.096"
+        geometry="primitive: box;" material="opacity: 0; color: green" position="0.523 0.055 -0.096"
         collision="area: #goal-right;"></a-entity>
 
+      <!-- pontos de sensibilidade do caixote NÃO sustentável -->
       <a-entity id="caixote-nao-sustentavel-left" rotation="0 -62.24212415844672 0" scale="0.555 0.555 0.555"
-        geometry="primitive: box;" material="opacity: 0.1; color: red" position="-0.82853 0.055 -0.174"
+        geometry="primitive: box;" material="opacity: 0; color: red" position="-0.82853 0.055 -0.174"
         collision="area: #goal-left;"></a-entity>
       <a-entity id="caixote-nao-sustentavel-right" rotation="0 -62.24212415844672 0" scale="0.555 0.555 0.555"
-        geometry="primitive: box;" material="opacity: 0.1; color: red" position="-0.82853 0.055 -0.174"
+        geometry="primitive: box;" material="opacity: 0; color: red" position="-0.82853 0.055 -0.174"
         collision="area: #goal-right;"></a-entity>
+
 
       <!-- modelo caixote -->
       <a-entity id="caixote-correct" rotation="0 -40.347687933112574 0" scale="0.015 0.015 0.015"
