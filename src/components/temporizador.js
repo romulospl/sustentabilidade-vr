@@ -4,15 +4,21 @@ import { ManipuladorObjects } from '@/util/manipuladorObjects'
 const somTempoRestante = document.querySelector('#tempo-restante-sound')
 const somNotificacao = document.querySelector('#notification-sound')
 
+const msgTempoEsgotado = document.querySelector('#msg-tempo-esgotado')
+
+function showTempoEsgotado() {
+    msgTempoEsgotado.setAttribute('visible', 'true')
+    setTimeout(() => msgTempoEsgotado.setAttribute('visible', 'false'), 5000)
+}
 
 
 function escreverTempo(text) {
     const minutosFormatados = minutos.toString().padStart(2, '0');
     const segundosFormatados = segundos.toString().padStart(2, '0');
 
-    
+
     const tempoFormatado = `${minutosFormatados}:${segundosFormatados}`;
-    if(minutos == 0 && segundos <= 2){
+    if (minutos == 0 && segundos <= 2) {
         somTempoRestante.components.sound.playSound()
     }
     document.querySelector('#tempo').setAttribute('text', {
@@ -75,9 +81,9 @@ AFRAME.registerComponent('temporizador', {
         clearInterval(this.temporizador)
     },
     avisarTempoEsgotado: function () {
-        showLog("Tempo esgotado")
+        showTempoEsgotado()
     },
-    zerarTempo: function(){
+    zerarTempo: function () {
         minutos = minutoOriginal;
         segundos = segundoOriginal;
     }

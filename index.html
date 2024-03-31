@@ -57,6 +57,10 @@
       <a-asset-item id="cachote-correct-model" src="/assets/caixotes/caixotescheck.glb"></a-asset-item>
       <a-asset-item id="cachote-wrong-model" src="/assets/caixotes/caixotesuncheck.glb"></a-asset-item>
 
+      <!-- mensagens -->
+      <a-asset-item id="desafio-concluido-model" src="/assets/mensagens/desafio-concluido.glb"></a-asset-item>
+      <a-asset-item id="tempo-esgotado-model" src="/assets/mensagens/tempo-esgotado.glb"></a-asset-item>
+
       <!-- imagens -->
       <img id="fundo-branco-model" src="/assets/images/fundo-branco.png" />
 
@@ -85,7 +89,22 @@
         visible="true"></a-image>
       <a-entity id="tempo" text="color: red; align: center ;width: 0.5; value: " position="-0.17516 0.09006 -0.7033"
         temporizador></a-entity>
+
+      <!-- mensagens -->
+      <a-entity id="msg-desafio-concluido" position="0 0 -3" scale="0.3 0.3 0.3" geometry="primitive: box;"
+        material="opacity: 0; color: red" visible="false">
+        <a-entity scale="0.2 0.2 0.2"
+          position="-70.45365 -8.35514 36.71929" gltf-model="#desafio-concluido-model"></a-entity>
+      </a-entity>
+
+      <a-entity id="msg-tempo-esgotado" position="0 0 -3" scale="0.3 0.3 0.3" geometry="primitive: box;"
+        material="opacity: 0; color: red" visible="false">
+        <a-entity scale="0.2 0.2 0.2" position="-82.45365 -8.45514 36.71929"
+          gltf-model="#tempo-esgotado-model"></a-entity>
+      </a-entity>
+
     </a-camera>
+
 
     <!-- Hands -->
     <a-entity sphere-collider="objects: .target" super-hands hand-controls="hand: left"></a-entity>
@@ -101,8 +120,6 @@
       position="-2.34 -1.72 -48.07437"></a-entity>
     <a-entity id="map-road4" scale="2.96337 2.96337 2.96337" rotation="0 155.14379289213892 0" gltf-model="#plano"
       position="0.12786 -1.72 -79.11329"></a-entity>
-    <!-- <a-entity id="map-road5" scale="3.213 3.213 3.213" rotation="-0.11516451682129547 49.70924534775509 10.127601986732431" gltf-model="#plano"
-      position="-13.803 -4.252 -98.255"></a-entity> -->
     <a-light id="light1" light="intensity: 4.14" scale="0.829 0.829 0.829" position="-0.031 1.884 0.62931"
       rotation="117.251 84.993 -117.162"></a-light>
 
@@ -262,7 +279,7 @@
       <a-entity id="caixote-nao-sustentavel-left" rotation="0 -62.24212415844672 0" scale="0.555 0.555 0.555"
         geometry="primitive: box;" material="opacity: 0.1; color: red" position="-0.82853 0.055 -0.174"
         collision="area: #goal-left;"></a-entity>
-      <a-entity id="caixote-nao-sustentavel-right"  rotation="0 -62.24212415844672 0" scale="0.555 0.555 0.555"
+      <a-entity id="caixote-nao-sustentavel-right" rotation="0 -62.24212415844672 0" scale="0.555 0.555 0.555"
         geometry="primitive: box;" material="opacity: 0.1; color: red" position="-0.82853 0.055 -0.174"
         collision="area: #goal-right;"></a-entity>
 

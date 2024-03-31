@@ -2,6 +2,13 @@
 import { showLog } from '@/system/showLogs'
 import { ManipuladorObjects } from '@/util/manipuladorObjects'
 
+
+function hideMessages() {
+    document.querySelector('#msg-desafio-concluido').setAttribute('visible', 'false')
+    document.querySelector('#msg-tempo-esgotado').setAttribute('visible', 'false')
+}
+
+
 AFRAME.registerComponent('start-button', {
     schema: {
     },
@@ -34,6 +41,7 @@ AFRAME.registerComponent('start-button', {
             this.manipulador.setPosition('0 -10 0')
 
             setTimeout(() => this.el.addEventListener('grab-start', this.hoverStart), 2000)
+            hideMessages()
             this.el.emit('startgame')
         } catch (error) {
             showLog(error)

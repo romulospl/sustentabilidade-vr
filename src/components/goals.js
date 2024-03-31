@@ -70,6 +70,13 @@ const somPontuado = document.querySelector('#pontuado-som')
 const somWrong = document.querySelector('#wrong-sound')
 const somSucess = document.querySelector('#sucess-sound')
 
+const msgPontuacaoAtingida = document.querySelector('#msg-desafio-concluido')
+
+function showPontuacaoAtingida() {
+    msgPontuacaoAtingida.setAttribute('visible', 'true')
+    setTimeout(() => msgPontuacaoAtingida.setAttribute('visible', 'false'), 5000)
+}
+
 /*
 STATUS:
 {
@@ -136,7 +143,7 @@ AFRAME.registerComponent('goal-object-left', {
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
         this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
     },
-    startPressionado: function (){
+    startPressionado: function () {
         this.status = 'pronto'
         this.irParaPosicaoInicial()
         this.iniciarJogo()
@@ -246,9 +253,9 @@ AFRAME.registerComponent('goal-object-left', {
         this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
         this.pontuacaoatingida()
     },
-    pontuacaoatingida: function (){
+    pontuacaoatingida: function () {
+
         
-        showLog("Desafio concluído", 'green')
         // console.clear()
         console.log("Fim de jogo")
         this.resetarGoal()
@@ -270,8 +277,6 @@ AFRAME.registerComponent('goal-object-left', {
         // if (placarAtigindo()) this.reiniciarGoal()
     }
 });
-
-
 
 // OBJECT RIGHT
 AFRAME.registerComponent('goal-object-right', {
@@ -330,7 +335,7 @@ AFRAME.registerComponent('goal-object-right', {
         this.tempoEsgotado = this.tempoEsgotado.bind(this)
         this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
     },
-    startPressionado: function (){
+    startPressionado: function () {
         this.status = 'pronto'
         this.irParaPosicaoInicial()
         this.iniciarJogo()
@@ -441,9 +446,8 @@ AFRAME.registerComponent('goal-object-right', {
         this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
         this.pontuacaoatingida()
     },
-    pontuacaoatingida: function (){
-        
-        showLog("Desafio concluído", 'green')
+    pontuacaoatingida: function () {
+
         // console.clear()
         console.log("Fim de jogo")
         this.resetarGoal()
@@ -496,15 +500,16 @@ AFRAME.registerComponent('pontuacao', {
             if (pontuacao >= pontuacaoFinal) {
                 clearInterval(self.contabilizador)
                 somSucess.components.sound.playSound()
+                showPontuacaoAtingida()
                 self.el.emit('pontuacaoatingida')
                 return
             }
         }, 100);
     },
-    zerarPlacar: function (){
+    zerarPlacar: function () {
         pontuacao = 0
     },
-    pararContabilizador: function(){
+    pararContabilizador: function () {
         clearInterval(this.contabilizador)
     }
 });
