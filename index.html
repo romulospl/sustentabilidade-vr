@@ -59,6 +59,7 @@
       <!-- sons -->
       <audio id="pontuado-sound-model" src="/assets/sounds/correct.wav" preload="auto"></audio>
       <audio id="fundo-sound-model" src="/assets/sounds/fundo.mp3" preload="auto"></audio>
+      <audio id="wrong-sound-model" src="/assets/sounds/wrong.wav" preload="auto"></audio>
     </a-assets>
 
     <!-- Camera -->
@@ -262,8 +263,8 @@
 
       <!-- sons -->
       <a-entity id="pontuado-som" sound="src: #pontuado-sound-model;"></a-entity>
-      <a-entity id="fundo-sound" sound="src: #fundo-sound-model;autoplay: true; volume: 0.2; loop: true"
-        loop="true"></a-entity>
+      <a-entity id="fundo-sound"></a-entity>
+      <a-entity id="wrong-sound" sound="src: #wrong-sound-model;volume: 0.5"></a-entity>
 
 
     </a-entity>

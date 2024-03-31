@@ -67,6 +67,7 @@ setInterval(function () {
 }, 100);
 
 const somPontuado = document.querySelector('#pontuado-som')
+const somWrong = document.querySelector('#wrong-sound')
 
 /*
 STATUS:
@@ -227,7 +228,8 @@ AFRAME.registerComponent('goal-object-left', {
             somPontuado.components.sound.playSound()
             pontuacao++
         } else {
-            showLog("Errou")
+            somWrong.components.sound.playSound()
+            // showLog("Errou")
         }
     },
     verificarCaixoteNegativo: function () {
@@ -421,7 +423,8 @@ AFRAME.registerComponent('goal-object-right', {
             somPontuado.components.sound.playSound()
             pontuacao++
         } else {
-            showLog("Errou")
+            somWrong.components.sound.playSound()
+            // showLog("Errou")
         }
     },
     verificarCaixoteNegativo: function () {
