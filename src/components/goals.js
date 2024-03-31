@@ -68,6 +68,7 @@ setInterval(function () {
 
 const somPontuado = document.querySelector('#pontuado-som')
 const somWrong = document.querySelector('#wrong-sound')
+const somSucess = document.querySelector('#sucess-sound')
 
 /*
 STATUS:
@@ -494,6 +495,7 @@ AFRAME.registerComponent('pontuacao', {
         this.contabilizador = setInterval(function () {
             if (pontuacao >= pontuacaoFinal) {
                 clearInterval(self.contabilizador)
+                somSucess.components.sound.playSound()
                 self.el.emit('pontuacaoatingida')
                 return
             }
