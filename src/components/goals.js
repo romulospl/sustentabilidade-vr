@@ -49,7 +49,7 @@ function getTempoAleatorio() {
     return (Math.floor(Math.random() * (2 - 1 + 1)) + 1) * 1000;
 }
 
-const pontuacaoFinal = 4
+const pontuacaoFinal = 5
 let pontuacao = 0
 // atualizarPontuacao()
 
