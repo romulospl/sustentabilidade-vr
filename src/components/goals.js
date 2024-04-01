@@ -87,392 +87,242 @@ STATUS:
 }
 */
 
-// OBJECT LEFT
-AFRAME.registerComponent('goal-object-left', {
+AFRAME.registerComponent('goal-object', {
     schema: {
         toPosition: { default: '0 0 16.15' },
+        caixaSustentavel: { default: '' },
+        caixaNaoSustentavel: { default: '' },
     },
     init: function () {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
-            this.posicaoAlvo = "-1.12442 1.42 4.935"
-            this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-left'))
-
-            this.irParaPosicaoInicial()
-
-            let buttonStart = document.querySelector('#button-start-contato')
-            let outroGoal = document.querySelector('#goal-right')
-            let temporizador = document.querySelector('#tempo')
-            this.placar = document.querySelector('#pontuacao')
-
-            this.caixaSustentavel = document.querySelector('#caixote-sustentavel-left')
-            this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-left')
-
+            this.posicaoAlvo = this.data.toPosition
             this.bindMethods()
-            this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
-            this.el.addEventListener('hover-start', this.hoverStart)
+
+            this.otherGoals = document.querySelectorAll(`[goal-object]:not([id="${this.manipulador.getElementId()}"])`);
+            this.caixaSustentavel = document.querySelector(this.data.caixaSustentavel)
+            this.caixaNaoSustentavel = document.querySelector(this.data.caixaNaoSustentavel)
+            this.placar = document.querySelector('#pontuacao')
+            let buttonStart = document.querySelector('#button-start-contato')
+            let temporizador = document.querySelector('#tempo')
+
+            console.log(this.caixaSustentavel)
+            console.log(this.caixaNaoSustentavel)
             buttonStart.addEventListener('startgame', this.startPressionado)
-            // buttonStart.addEventListener('startgame', this.iniciarJogo)
-            outroGoal.addEventListener('resetarGoal', this.resetarGoal)
-            outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
-            temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
-            this.placar.addEventListener('pontuacaoatingida', this.pontuacaoatingida)
+            temporizador.addEventListener('tempoesgotado', this.resetarGoal)
+            this.el.addEventListener('hover-start', this.irParaAreaCentralizada)
+            this.el.addEventListener('collisionstarted', this.reiniciarGoal)
+            this.placar.addEventListener('pontuacaoatingida', this.resetarGoal)
+
+            const self = this
+            this.otherGoals.forEach(function (elemento) {
+                elemento.addEventListener('resetarGoal', self.resetarGoal)
+                elemento.addEventListener('liberarmodelo', self.liberarStatus)
+            });
         } catch (error) {
             showLog(error)
             console.log(error)
         }
     },
     bindMethods: function () {
-        this.iniciarJogo = this.iniciarJogo.bind(this)
-        this.startPressionado = this.startPressionado.bind(this)
-        this.selecionarModelo = this.selecionarModelo.bind(this)
-        this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
-        this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
         this.resetarGoal = this.resetarGoal.bind(this)
         this.liberarStatus = this.liberarStatus.bind(this)
+        this.startPressionado = this.startPressionado.bind(this)
+        this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
+        this.iniciarJogo = this.iniciarJogo.bind(this)
+        this.reiniciarGoal = this.reiniciarGoal.bind(this)
         this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
         this.removerAnimacao = this.removerAnimacao.bind(this)
-        this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
-        this.resetarOpcoesCaixote = this.resetarOpcoesCaixote.bind(this)
         this.removerModelo = this.removerModelo.bind(this)
-        this.reiniciarGoal = this.reiniciarGoal.bind(this)
-        this.hoverStart = this.hoverStart.bind(this)
+        this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
+        this.selecionarModelo = this.selecionarModelo.bind(this)
         this.verificarCaixotePositivo = this.verificarCaixotePositivo.bind(this)
-        this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
-        this.endGame = this.endGame.bind(this)
-        this.tempoEsgotado = this.tempoEsgotado.bind(this)
-        this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
+        this.resetarOpcoesCaixote = this.resetarOpcoesCaixote.bind(this)
     },
-    startPressionado: function () {
-        this.status = 'pronto'
-        this.irParaPosicaoInicial()
-        this.iniciarJogo()
-    },
-    iniciarJogo: function () {
-        if (this.status === 'pronto') {
-            this.selecionarModelo()
-            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
-            this.status = 'iniciado'
+    resetarGoal: function () {
+        try {
+            this.status = 'aguardando'
+            this.removerAnimacao()
+            this.reiniciarGoal()
+        } catch (error) {
+            showLog(error)
+            showLog2("resetarGoal")
+            console.log(error)
         }
     },
-    selecionarModelo: function () {
-        // console.clear();
-        let modeloSorteado = sortearGoal(this.el)
-        let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        while (modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
-            modeloSorteado = sortearGoal(this.el)
-            manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        }
-
-        this.modeloSorteado = modeloSorteado.sorteado
-        this.pontuacao = modeloSorteado.value
-
-        // console.log(`pontuação: ${this.modeloSorteado}`)
-        modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
-        let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
-        if (manipuladorModeloSorteado.getPosition("y") < -2) {
-            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
+    reiniciarGoal: function () {
+        try {
+            this.removerModelo()
+            this.irParaPosicaoInicial()
+            setTimeout(() => {
+                if (pontuacao >= pontuacaoFinal) {
+                    // this.endGame()
+                    return
+                } else {
+                    this.iniciarJogo()
+                }
+            }, 500)
+        } catch (error) {
+            showLog(error)
+            showLog2("reiniciarGoal")
+            console.log(error)
         }
     },
     removerModelo: function () {
-        let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
-        if (manipuladorModeloSorteado.getPosition("y") > -2) {
-            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+        try {
+            let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
+            if (manipuladorModeloSorteado.getPosition("y") > -2) {
+                manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
+            }
+        } catch (error) {
+            showLog(error)
+            showLog2("removerModelo")
+            console.log(error)
+        }
+    },
+    liberarStatus: function () {
+        try {
+            this.status = 'pronto'
+            this.reiniciarGoal()
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("liberarStatus")
+        }
+    },
+    startPressionado: function () {
+        try {
+            this.status = 'pronto'
+            this.irParaPosicaoInicial()
+            this.iniciarJogo()
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("startPressionado")
+        }
+    },
+    iniciarJogo: function () {
+        try {
+            if (this.status === 'pronto') {
+                this.selecionarModelo()
+                setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
+                this.status = 'iniciado'
+            }
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("iniciarJogo")
         }
     },
     irParaPosicaoInicial: function () {
-        this.manipulador.setPosition(posicaoInicial)
-        if (this.status === 'aguardando') return
-        this.status = 'pronto'
-        this.el.addEventListener('hover-start', this.hoverStart)
+        try {
+            this.manipulador.setPosition(posicaoInicial)
+            if (this.status === 'aguardando') return
+            this.status = 'pronto'
+            this.el.addEventListener('hover-start', this.irParaAreaCentralizada)
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("irParaPosicaoInicial")
+        }
+    },
+    selecionarModelo: function () {
+        try {
+            let modeloSorteado = sortearGoal(this.el)
+            let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
+            while (modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
+                modeloSorteado = sortearGoal(this.el)
+                manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
+            }
+
+            this.modeloSorteado = modeloSorteado.sorteado
+            this.pontuacao = modeloSorteado.value
+
+            // console.log(`pontuação: ${this.modeloSorteado}`)
+            modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
+            let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
+            if (manipuladorModeloSorteado.getPosition("y") < -2) {
+                manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
+            }
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("selecionarModelo")
+        }
     },
     adicionarAnimacao: function () {
-        this.removerAnimacao()
-        this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
+        try {
+            this.removerAnimacao()
+            this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("adicionarAnimacao")
+        }
     },
     removerAnimacao: function () {
-        this.manipulador.deleteAnimation()
+        try {
+            this.manipulador.deleteAnimation()
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("removerAnimacao")
+        }
     },
-    verificarAreaEscape: function () {
-        this.reiniciarGoal()
+    irParaAreaCentralizada: function () {
+        try {
+            if (this.status != 'iniciado') return
+            this.el.removeEventListener('hover-start', this.irParaAreaCentralizada)
+            this.status = 'hoverStart'
+            this.el.emit('resetarGoal')
+            let tempo = 2000
+            this.removerAnimacao()
+            this.manipulador.addAnimation(posicaoCentralizada, tempo)
+            this.manipulador.removeAttribute('hoverable')
+            setTimeout(() => {
+                this.caixaSustentavel.addEventListener('collisionstarted', this.verificarCaixotePositivo)
+                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.resetarOpcoesCaixote)
+                this.manipulador.addAttribute('grabbable')
+                this.removerAnimacao()
+            }, (tempo + 500))
+
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("irParaAreaCentralizada")
+        }
     },
-    reiniciarGoal: function () {
-        this.removerModelo()
-        this.irParaPosicaoInicial()
-        setTimeout(() => {
-            if (pontuacao >= pontuacaoFinal) {
-                // this.endGame()
-                return
+    verificarCaixotePositivo: function () {
+        try {
+            this.resetarOpcoesCaixote()
+            if (this.pontuacao == 1) {
+                somPontuado.components.sound.playSound()
+                pontuacao++
             } else {
-                this.iniciarJogo()
+                somWrong.components.sound.playSound()
+                // showLog("Errou")
             }
-        }, 500)
-    },
-    hoverStart: function () {
-        if (this.status === 'iniciado') this.irParaAreaCentralizada()
-    },
-    irParaAreaCentralizada: function () {
-        this.el.removeEventListener('hover-start', this.hoverStart)
-        this.status = 'hoverStart'
-        this.el.emit('resetarGoal')
-        let time = 2000
-        try {
-            this.removerAnimacao()
-            this.manipulador.addAnimation(posicaoCentralizada, time)
-            this.manipulador.removeAttribute('hoverable')
-            setTimeout(() => {
-                this.caixaSustentavel.addEventListener('collisionstarted', this.verificarCaixotePositivo)
-                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.verificarCaixoteNegativo)
-                this.manipulador.addAttribute('grabbable')
-                this.removerAnimacao()
-            }, (time + 500))
-        } catch (error) {
-            showLog(error)
-        }
-    },
-    verificarCaixotePositivo: function () {
-        this.resetarOpcoesCaixote()
-        if (this.pontuacao == 1) {
-            somPontuado.components.sound.playSound()
-            pontuacao++
-        } else {
-            somWrong.components.sound.playSound()
-            // showLog("Errou")
-        }
-    },
-    verificarCaixoteNegativo: function () {
-        this.resetarOpcoesCaixote()
-    },
-    resetarOpcoesCaixote: function () {
-        this.caixaSustentavel.removeEventListener('collisionstarted', this.verificarCaixotePositivo)
-        this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.verificarCaixoteNegativo)
-        this.reiniciarGoal()
-        this.el.emit('liberarmodelo')
-    },
-    endGame: function () {
-        this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
-        this.pontuacaoatingida()
-    },
-    pontuacaoatingida: function () {
-
-        
-        // console.clear()
-        console.log("Fim de jogo")
-        this.resetarGoal()
-    },
-    resetarGoal: function () {
-        this.status = 'aguardando'
-        this.removerAnimacao()
-        this.reiniciarGoal()
-    },
-    liberarStatus: function () {
-        this.status = 'pronto'
-        this.reiniciarGoal()
-    },
-    tempoEsgotado: function () {
-        this.resetarGoal()
-    },
-    tick: function () {
-        // 
-        // if (placarAtigindo()) this.reiniciarGoal()
-    }
-});
-
-// OBJECT RIGHT
-AFRAME.registerComponent('goal-object-right', {
-    schema: {
-        toPosition: { default: '0 0 16.15' },
-    },
-    init: function () {
-        try {
-            this.manipulador = new ManipuladorObjects(this.el)
-            this.posicaoAlvo = "1.12442 1.42 4.935"
-
-            this.manipuladorScape = new ManipuladorObjects(document.querySelector('#scape-right'))
-
-            this.irParaPosicaoInicial()
-
-            let buttonStart = document.querySelector('#button-start-contato')
-            let outroGoal = document.querySelector('#goal-left')
-            let temporizador = document.querySelector('#tempo')
-            this.placar = document.querySelector('#pontuacao')
-
-            this.caixaSustentavel = document.querySelector('#caixote-sustentavel-right')
-            this.caixaNaoSustentavel = document.querySelector('#caixote-nao-sustentavel-right')
-
-            this.bindMethods()
-            this.el.addEventListener('collisionstarted', this.verificarAreaEscape)
-            this.el.addEventListener('hover-start', this.hoverStart)
-            buttonStart.addEventListener('startgame', this.startPressionado)
-            // buttonStart.addEventListener('startgame', this.iniciarJogo)
-            outroGoal.addEventListener('resetarGoal', this.resetarGoal)
-            outroGoal.addEventListener('liberarmodelo', this.liberarStatus)
-            temporizador.addEventListener('tempoesgotado', this.tempoEsgotado)
-            this.placar.addEventListener('pontuacaoatingida', this.pontuacaoatingida)
         } catch (error) {
             showLog(error)
             console.log(error)
+            showLog2("verificarCaixotePositivo")
         }
-    },
-    bindMethods: function () {
-        this.iniciarJogo = this.iniciarJogo.bind(this)
-        this.startPressionado = this.startPressionado.bind(this)
-        this.selecionarModelo = this.selecionarModelo.bind(this)
-        this.irParaPosicaoInicial = this.irParaPosicaoInicial.bind(this)
-        this.irParaAreaCentralizada = this.irParaAreaCentralizada.bind(this)
-        this.resetarGoal = this.resetarGoal.bind(this)
-        this.liberarStatus = this.liberarStatus.bind(this)
-        this.adicionarAnimacao = this.adicionarAnimacao.bind(this)
-        this.removerAnimacao = this.removerAnimacao.bind(this)
-        this.verificarAreaEscape = this.verificarAreaEscape.bind(this)
-        this.resetarOpcoesCaixote = this.resetarOpcoesCaixote.bind(this)
-        this.removerModelo = this.removerModelo.bind(this)
-        this.reiniciarGoal = this.reiniciarGoal.bind(this)
-        this.hoverStart = this.hoverStart.bind(this)
-        this.verificarCaixotePositivo = this.verificarCaixotePositivo.bind(this)
-        this.verificarCaixoteNegativo = this.verificarCaixoteNegativo.bind(this)
-        this.endGame = this.endGame.bind(this)
-        this.tempoEsgotado = this.tempoEsgotado.bind(this)
-        this.pontuacaoatingida = this.pontuacaoatingida.bind(this)
-    },
-    startPressionado: function () {
-        this.status = 'pronto'
-        this.irParaPosicaoInicial()
-        this.iniciarJogo()
-    },
-    iniciarJogo: function () {
-        if (this.status === 'pronto') {
-            this.selecionarModelo()
-            setTimeout(() => this.adicionarAnimacao(), getTempoAleatorio())
-            this.status = 'iniciado'
-        }
-    },
-    selecionarModelo: function () {
-        // console.clear();
-        let modeloSorteado = sortearGoal(this.el)
-        let manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        while (modelosEscolhidos.includes(manipuladorModeloSorteado.getElementId())) {
-            modeloSorteado = sortearGoal(this.el)
-            manipuladorModeloSorteado = new ManipuladorObjects(modeloSorteado.sorteado)
-        }
-
-        this.modeloSorteado = modeloSorteado.sorteado
-        this.pontuacao = modeloSorteado.value
-
-        // console.log(`pontuação: ${this.modeloSorteado}`)
-        modelosEscolhidos.push(manipuladorModeloSorteado.getElementId())
-        let infoModelo = getInfoModelo(manipuladorModeloSorteado.getElementId())
-        if (manipuladorModeloSorteado.getPosition("y") < -2) {
-            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${infoModelo.altura} ${manipuladorModeloSorteado.getPosition("z")}`)
-        }
-    },
-    removerModelo: function () {
-        let manipuladorModeloSorteado = new ManipuladorObjects(this.modeloSorteado)
-        if (manipuladorModeloSorteado.getPosition("y") > -2) {
-            manipuladorModeloSorteado.setPosition(`${manipuladorModeloSorteado.getPosition("x")} ${manipuladorModeloSorteado.getPosition("y") - 10} ${manipuladorModeloSorteado.getPosition("z")}`)
-        }
-    },
-    irParaPosicaoInicial: function () {
-        this.manipulador.setPosition(posicaoInicial)
-        if (this.status === 'aguardando') return
-        this.status = 'pronto'
-        this.el.addEventListener('hover-start', this.hoverStart)
-    },
-    adicionarAnimacao: function () {
-        this.removerAnimacao()
-        this.manipulador.addAnimation(this.posicaoAlvo, tempoDeAnimacao)
-    },
-    removerAnimacao: function () {
-        this.manipulador.deleteAnimation()
-    },
-    verificarAreaEscape: function () {
-        this.reiniciarGoal()
-    },
-    reiniciarGoal: function () {
-        this.removerModelo()
-        this.irParaPosicaoInicial()
-        setTimeout(() => {
-            if (pontuacao >= pontuacaoFinal) {
-                // this.endGame()
-                return
-            }
-            else {
-                this.iniciarJogo()
-            }
-        }, 500)
-    },
-    hoverStart: function () {
-        if (this.status === 'iniciado') this.irParaAreaCentralizada()
-    },
-    irParaAreaCentralizada: function () {
-        this.el.removeEventListener('hover-start', this.hoverStart)
-        this.status = 'hoverStart'
-        this.el.emit('resetarGoal')
-        let time = 2000
-        try {
-            this.removerAnimacao()
-            this.manipulador.addAnimation(posicaoCentralizada, time)
-            this.manipulador.removeAttribute('hoverable')
-            setTimeout(() => {
-                this.caixaSustentavel.addEventListener('collisionstarted', this.verificarCaixotePositivo)
-                this.caixaNaoSustentavel.addEventListener('collisionstarted', this.verificarCaixoteNegativo)
-                this.manipulador.addAttribute('grabbable')
-                this.removerAnimacao()
-            }, (time + 500))
-        } catch (error) {
-            showLog(error)
-        }
-    },
-    verificarCaixotePositivo: function () {
-        this.resetarOpcoesCaixote()
-        if (this.pontuacao == 1) {
-            somPontuado.components.sound.playSound()
-            pontuacao++
-        } else {
-            somWrong.components.sound.playSound()
-            // showLog("Errou")
-        }
-    },
-    verificarCaixoteNegativo: function () {
-        this.resetarOpcoesCaixote()
     },
     resetarOpcoesCaixote: function () {
-        this.caixaSustentavel.removeEventListener('collisionstarted', this.verificarCaixotePositivo)
-        this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.verificarCaixoteNegativo)
-        this.reiniciarGoal()
-        this.el.emit('liberarmodelo')
+        try {
+            this.caixaSustentavel.removeEventListener('collisionstarted', this.verificarCaixotePositivo)
+            this.caixaNaoSustentavel.removeEventListener('collisionstarted', this.verificarCaixoteNegativo)
+            this.reiniciarGoal()
+            this.el.emit('liberarmodelo')
+        } catch (error) {
+            showLog(error)
+            console.log(error)
+            showLog2("resetarOpcoesCaixote")
+        }
     },
-    endGame: function () {
-        this.placar.removeEventListener('pontuacaoatingida', this.pontuacaoatingida)
-        this.pontuacaoatingida()
-    },
-    pontuacaoatingida: function () {
-
-        // console.clear()
-        console.log("Fim de jogo")
-        this.resetarGoal()
-    },
-    resetarGoal: function () {
-        this.status = 'aguardando'
-        this.removerAnimacao()
-        this.reiniciarGoal()
-    },
-    liberarStatus: function () {
-        this.status = 'pronto'
-        this.reiniciarGoal()
-    },
-    tempoEsgotado: function () {
-        this.resetarGoal()
-    },
-    tick: function () {
-        // if (modelosEscolhidos.length > 7) modelosEscolhidos = []
-        // if (placarAtigindo()) this.reiniciarGoal()
-    }
-});
+})
 
 AFRAME.registerComponent('pontuacao', {
-    schema: {
-    },
     init: function () {
         try {
             this.bindMethods()

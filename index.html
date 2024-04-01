@@ -132,7 +132,7 @@
 
       <!-- Goal Left -->
       <a-entity id="goal-left" scale="0.57972 0.57972 0.57972" class="target" position="-0.897 1.345 -1.053"
-        goal-object-left="toPosition: -1 1.7 20;" color="red" geometry="primitive: box;"
+        goal-object="toPosition: -1.12442 1.42 4.935; caixaSustentavel: #caixote-sustentavel-left; caixaNaoSustentavel: #caixote-nao-sustentavel-left" color="red" geometry="primitive: box;"
         material="opacity: 0; color: red" collision="area: #scape-left;">
 
         <!-- modelos positivos -->
@@ -197,7 +197,7 @@
 
       <!-- Goal Right -->
       <a-entity id="goal-right" scale="0.57972 0.57972 0.57972" class="target" position="-0.897 1.345 -1.053"
-        goal-object-right="toPosition: -1 1.7 20;" color="blue" geometry="primitive: box;"
+        goal-object="toPosition: 1.12442 1.42 4.935; caixaSustentavel: #caixote-sustentavel-right; caixaNaoSustentavel: #caixote-nao-sustentavel-right" color="blue" geometry="primitive: box;"
         material="opacity: 0; color: red" collision="area: #scape-right;">
 
         <!-- modelos positivos -->
@@ -270,8 +270,7 @@
 
       <!-- pontos de sensibilidade do caixote sustentável -->
       <a-entity id="caixote-sustentavel-left" rotation="0 48.31 0" scale="0.555 0.555 0.555" geometry="primitive: box;"
-        material="opacity: 0; color: green" position="0.52253 0.055 -0.09561"
-        collision="area: #goal-left;"></a-entity>
+        material="opacity: 0; color: green" position="0.52253 0.055 -0.09561" collision="area: #goal-left;"></a-entity>
       <a-entity id="caixote-sustentavel-right" rotation="0 48.31 0" scale="0.555 0.555 0.555" scale="0.555 0.555 0.555"
         geometry="primitive: box;" material="opacity: 0; color: green" position="0.523 0.055 -0.096"
         collision="area: #goal-right;"></a-entity>
