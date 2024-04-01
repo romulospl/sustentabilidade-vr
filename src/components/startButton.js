@@ -8,6 +8,34 @@ function hideMessages() {
     document.querySelector('#msg-tempo-esgotado').setAttribute('visible', 'false')
 }
 
+function hoverStart(el) {
+    try {
+        let manipulador = new ManipuladorObjects(el)
+        el.removeEventListener('grab-start', () => hoverStart(el))
+        let manipuladorButtonModel = new ManipuladorObjects(document.querySelector('#button-start'))
+        manipuladorButtonModel.setPosition('0 -10 0')
+        manipulador.setPosition('0 -10 0')
+        setTimeout(() => el.addEventListener('grab-start', () => hoverStart(el)), 2000)
+        hideMessages()
+        el.emit('startgame')
+    } catch (error) {
+        showLog(error)
+    }
+}
+
+function resetarPosicao(el){
+    try{
+        let manipulador = new ManipuladorObjects(el)
+        let manipuladorButtonModel = new ManipuladorObjects(document.querySelector('#button-start'))
+        setTimeout(() => {
+            manipuladorButtonModel.setPosition('-0.003 0.7 -0.49497')
+            manipulador.setPosition('0 0.831 -0.46235')
+        }, 3000)
+    } catch (error){
+        showLog(error)
+    }
+}
+
 
 AFRAME.registerComponent('start-button', {
     schema: {
@@ -16,43 +44,15 @@ AFRAME.registerComponent('start-button', {
         try {
             this.manipulador = new ManipuladorObjects(this.el)
 
-            this.bindMethods()
-
             let temporizador = document.querySelector('#tempo')
             let placar = document.querySelector('#pontuacao')
 
-            temporizador.addEventListener('tempoesgotado', this.colocarPosicaoInicial)
-            placar.addEventListener('pontuacaoatingida', this.colocarPosicaoInicial)
-            this.el.addEventListener('grab-start', this.hoverStart)
-            // setTimeout(() => this.hoverStart(), 3000)
+            temporizador.addEventListener('tempoesgotado', () => resetarPosicao(this.el))
+            placar.addEventListener('pontuacaoatingida', () => resetarPosicao(this.el))
+            this.el.addEventListener('grab-start', () => hoverStart(this.el))
         } catch (error) {
             showLog(error)
         }
     },
-    bindMethods: function () {
-        this.hoverStart = this.hoverStart.bind(this)
-        this.colocarPosicaoInicial = this.colocarPosicaoInicial.bind(this)
-    },
-    hoverStart: function () {
-        this.el.removeEventListener('grab-start', this.hoverStart)
-        try {
-            let manipuladorButtonModel = new ManipuladorObjects(document.querySelector('#button-start'))
-            manipuladorButtonModel.setPosition('0 -10 0')
-            this.manipulador.setPosition('0 -10 0')
-
-            setTimeout(() => this.el.addEventListener('grab-start', this.hoverStart), 2000)
-            hideMessages()
-            this.el.emit('startgame')
-        } catch (error) {
-            showLog(error)
-        }
-    },
-    colocarPosicaoInicial: function () {
-        let manipuladorButtonModel = new ManipuladorObjects(document.querySelector('#button-start'))
-        setTimeout(() => {
-            manipuladorButtonModel.setPosition('-0.003 0.7 -0.49497')
-            this.manipulador.setPosition('0 0.831 -0.46235')
-        }, 3000)
-    }
 });
 
